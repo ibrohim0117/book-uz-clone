@@ -1,0 +1,40 @@
+# Python muhiti (Virtual Environment)
+venv/
+env/
+.venv/
+bin/
+include/
+lib/
+share/
+pyvenv.cfg
+
+# Python kesh fayllari
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Maxfiy va muhit o'zgaruvchilari (Juda muhim!)
+.env
+.python-version
+local_settings.py
+
+# Django fayllari
+db.sqlite3
+db.sqlite3-journal
+media/
+staticfiles/
+
+# IDE va Editorlar (VS Code, PyCharm)
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# MacOS tizim fayllari
+.DS_Store
+
+# Log fayllar
+*.log
