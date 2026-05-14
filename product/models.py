@@ -17,4 +17,7 @@ class Category(BaseCreateModel):
     def __str__(self):
         return self.name
     
+    
+class Product(BaseCreateModel):
+    pass
 
