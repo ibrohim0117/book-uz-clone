@@ -1,4 +1,6 @@
+import uuid
 from django.db import models
+from django.utils.text import slugify
 
 
 class BaseCreateModel(models.Model):
@@ -9,15 +11,60 @@ class BaseCreateModel(models.Model):
         abstract = True
 
 
+
 class Category(BaseCreateModel):
-    name = models.CharField(max_length=100, verbose_name="Kategoriya nomi")
-    slug = models.SlugField(unique=True, null=False, blank=False)
-    parent = models.ForeignKey('self', on_delete=models.CASCADE, related_name="children")
+    name = models.CharField(max_length=300)
+    slug = models.SlugField(unique=True)
+    parent = models.ForeignKey('self', on_delete=models.SET_NULL, related_name="children", blank=True, null=True)
+    category_omage = models.ImageField(upload_to="category/", null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+
+        slug = slugify(self.name)
+        while Category.objects.filter(slug=slug).exists():
+            addon = uuid.uuid4().hex[2]
+            slugger = f"{slug}-{addon}"
+            
+        self.slug = slugger
+        
+        
+        return super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.name
+
+
+
+class Author(BaseCreateModel):
+    full_name = models.CharField(400)
+    about = models.TextField()
+
+    def __str__(self):
+        return self.full_name
+
+
+class Book(BaseCreateModel):
+    name = models.CharField(max_length=500)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    about = models.TextField()
+    count = models.IntegerField()
+    is_active = models.BooleanField(default=True)
+    add_user = models.IntegerField(default=0)
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, related_name="category", blank=True, null=True)
+    info = models.JSONField()
+    author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name="author")
+    views = models.IntegerField()
 
     def __str__(self):
         return self.name
     
-    
-class Product(BaseCreateModel):
-    pass
+
+
+class BookImage(BaseCreateModel):
+    image = models.ImageField(upload_to="books/")
+    book  = models.ForeignKey(Book, on_delete=models.CASCADE, related_name="book_image")
+
+    def __str__(self):
+        return self.book.name
+
 
