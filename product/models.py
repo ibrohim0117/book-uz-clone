@@ -14,20 +14,17 @@ class BaseCreateModel(models.Model):
 
 class Category(BaseCreateModel):
     name = models.CharField(max_length=300)
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(unique=True, editable=False)
     parent = models.ForeignKey('self', on_delete=models.SET_NULL, related_name="children", blank=True, null=True)
-    category_omage = models.ImageField(upload_to="category/", null=True, blank=True)
+    category_image = models.ImageField(upload_to="category/", null=True, blank=True)
 
     def save(self, *args, **kwargs):
-
         slug = slugify(self.name)
+        self.slug = slug
         while Category.objects.filter(slug=slug).exists():
             addon = uuid.uuid4().hex[2]
             slugger = f"{slug}-{addon}"
-            
-        self.slug = slug
-        
-        
+            self.slug = slugger
         return super().save(*args, **kwargs)
 
     def __str__(self):
@@ -45,6 +42,7 @@ class Author(BaseCreateModel):
 
 class Book(BaseCreateModel):
     name = models.CharField(max_length=500)
+    slug = models.SlugField(unique=True, editable=False)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     about = models.TextField()
     count = models.IntegerField()
@@ -57,6 +55,15 @@ class Book(BaseCreateModel):
 
     def __str__(self):
         return self.name
+    
+    def save(self, *args, **kwargs):
+        slug = slugify(self.name)
+        self.slug = slug
+        while Book.objects.filter(slug=slug).exists():
+            addon = uuid.uuid4().hex[2]
+            slugger = f"{slug}-{addon}"
+            self.slug = slugger
+        return super().save(*args, **kwargs)
     
 
 
