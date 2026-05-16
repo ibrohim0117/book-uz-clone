@@ -33,7 +33,7 @@ class Category(BaseCreateModel):
 
 
 class Author(BaseCreateModel):
-    full_name = models.CharField(400)
+    full_name = models.CharField(max_length=40)
     about = models.TextField()
 
     def __str__(self):
@@ -47,11 +47,11 @@ class Book(BaseCreateModel):
     about = models.TextField()
     count = models.IntegerField()
     is_active = models.BooleanField(default=True)
-    add_user = models.IntegerField(default=0)
+    # add_user = models.IntegerField(default=0)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, related_name="category", blank=True, null=True)
     info = models.JSONField()
     author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name="author")
-    views = models.IntegerField()
+    views = models.IntegerField(default=0)
 
     def __str__(self):
         return self.name
