@@ -21,11 +21,13 @@ class Category(BaseCreateModel):
     def save(self, *args, **kwargs):
 
         slug = slugify(self.name)
+        self.slug = slug
+
         while Category.objects.filter(slug=slug).exists():
             addon = uuid.uuid4().hex[2]
             slugger = f"{slug}-{addon}"
+            self.slug = slugger
             
-        self.slug = slug
         
         
         return super().save(*args, **kwargs)
