@@ -47,7 +47,6 @@ class Book(BaseCreateModel):
     about = models.TextField()
     count = models.IntegerField()
     is_active = models.BooleanField(default=True)
-    # add_user = models.IntegerField(default=0)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, related_name="category", blank=True, null=True)
     info = models.JSONField()
     author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name="author")
@@ -78,20 +77,3 @@ class BookImage(BaseCreateModel):
     class Meta:
         db_table = 'book'
 
-
-class BookImage(models.Model):
-    book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='images')
-    image = models.ImageField(upload_to='books/covers/')
-    is_main = models.BooleanField(default=False)  
-
-    def __str__(self):
-        return f"Image for {self.book.title}"
-    
-
-class BookAuthor(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    full_name = models.CharField(max_length=255)
-    about = models.TextField()
-
-    class Meta:
-        db_table = 'book_author'
