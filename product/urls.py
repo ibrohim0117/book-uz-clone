@@ -4,5 +4,4 @@ from .views import CategoryListCreateAPIView
 
 
 urlpatterns = [
-    path('category', CategoryListCreateAPIView.as_view(), name="category-create-list"),
 ]

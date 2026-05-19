@@ -2,13 +2,13 @@ from django.contrib import admin
 from django.urls import path, include
 
 from django.conf.urls.static import static
+from product.views import CategoryListCreateAPIView
 from root import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    path('api/v1/product/', include('product.urls')),
-    path('api/v1/user/', include('users.urls'))
+    path('api/v1/product/category', CategoryListCreateAPIView.as_view(), name="category-create-list"),
 ]
 
 
