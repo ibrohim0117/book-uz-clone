@@ -48,8 +48,8 @@ class Book(BaseCreateModel):
     count = models.IntegerField()
     is_active = models.BooleanField(default=True)
     # add_user = models.IntegerField(default=0)
-    category = models.ForeignKey(Category, on_delete=models.SET_NULL, related_name="category", blank=True, null=True)
-    info = models.JSONField()
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, related_name="books", blank=True, null=True)
+    info = models.JSONField(default=dict)
     author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name="author")
     views = models.IntegerField(default=0)
 
