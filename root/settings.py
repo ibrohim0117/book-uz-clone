@@ -13,7 +13,7 @@ DEBUG = os.getenv("DEBUG")
 
 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 
