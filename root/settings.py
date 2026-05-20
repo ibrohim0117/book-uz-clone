@@ -5,13 +5,13 @@ from dotenv import load_dotenv
 load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+SECRET_KEY = os.getenv("SECRET_KEY")
 
-SECRET_KEY = os.getenv("SECRET_KEY", "django-insecure-fallback-key-changeme-12345")
-DEBUG = os.getenv("DEBUG", "True") == "True"
+DEBUG = os.getenv("DEBUG")
+ALLOWED_HOSTS = []
 
-# Agar kelajakda DEBUG=False bo'lib qolsa ham xato bermasligi uchun
-# localhost va lokal IP manzillarni yozib qo'yamiz.
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '*']
+
+AUTH_USER_MODEL = 'product.UserMoodel' 
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -27,6 +27,7 @@ INSTALLED_APPS = [
 
     # install apps
     'rest_framework',
+    'drf_spectacular',
 ]
 
 MIDDLEWARE = [

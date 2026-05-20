@@ -1,5 +1,6 @@
 import uuid
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 from django.utils.text import slugify
 
 
@@ -48,8 +49,8 @@ class Book(BaseCreateModel):
     count = models.IntegerField()
     is_active = models.BooleanField(default=True)
     # add_user = models.IntegerField(default=0)
-    category = models.ForeignKey(Category, on_delete=models.SET_NULL, related_name="category", blank=True, null=True)
-    info = models.JSONField()
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, related_name="books", blank=True, null=True)
+    info = models.JSONField(default=dict)
     author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name="author")
     views = models.IntegerField(default=0)
 
@@ -74,4 +75,10 @@ class BookImage(BaseCreateModel):
     def __str__(self):
         return self.book.name
 
-
+#user modelini yozdim!
+class UserMoodel(AbstractUser, BaseCreateModel):
+    avatar = models.ImageField(upload_to="user_avatar/", blank=True, null=True)
+    phone = models.CharField(max_length=20)
+    
+    def __str__(self):
+        return self.username
