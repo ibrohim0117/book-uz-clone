@@ -41,3 +41,18 @@ class CategoryDetailSerializer(ModelSerializer):
     class Meta:
         model = Category
         fields = ['id', 'name', 'slug', 'category_image', 'books']
+
+
+
+
+class BookUpdateSerializer(ModelSerializer):
+
+    book_image = BookImageSerializer(many=True)
+
+
+    class Meta:
+        model = Book
+        fields = ['name', 'price', 'book_image', 'about', 'is_active']
+
+
+
