@@ -2,7 +2,7 @@ from rest_framework.generics import (
     CreateAPIView, ListAPIView,
     ListCreateAPIView, RetrieveUpdateDestroyAPIView
 )
-
+from drf_spectacular.utils import extend_schema
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
@@ -10,101 +10,53 @@ from rest_framework import status
 from .models import Category, Book
 from .serializers import (
     CategorySerializer, CategoryDetailSerializer,
-    CategoryUpdateSerializer, BookSerializer, BookUpdateSerializer
+    CategoryUpdateSerializer, BookSerializer, BookUpdateSerializer,
+    BookCreateSerializer
 )
 
 
-
+@extend_schema(tags=['category'])
 class CategoryListCreateAPIView(ListCreateAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    
 
-
-
+@extend_schema(tags=['category/slug'])
 class CategoryRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     queryset = Category.objects.all()
     serializer_class = CategoryDetailSerializer
     lookup_field = 'slug'
 
-    def get_serializer(self, *args, **kwargs):
-
-        if self.request.method == "PUT":
-            serializer = CategoryUpdateSerializer(data=self.request.data)
-            
-            if serializer.is_valid():
-                serializer.save()
-
-                return Response(
-                    status=status.HTTP_200_OK,
-                    data=serializer.data
-                )
-                
-            return Response(
-                status=status.HTTP_400_BAD_REQUEST
-            )
-    
-        elif self.request.method == "DELETE":
-
-            category = Category.objects.filter(slug=self.kwargs['slug']).first()
-            category.delete()
-
-            return Response(
-                status=status.HTTP_204_NO_CONTENT
-            )
-            
+    def get_serializer_class(self):
+        if self.request.method == 'GET':
+            return CategoryDetailSerializer
         
-        elif self.request.method == "GET":
-            category_obj = Category.objects.filter(slug=self.kwargs['slug']).first()
-            serializer = CategoryDetailSerializer(category_obj)
-
-            return Response(
-                data=serializer.data,
-                status=status.HTTP_200_OK
-            )
-
-        return super().get_serializer(*args, **kwargs)
+        elif self.request.method == "PUT":
+            return CategoryUpdateSerializer
 
 
+@extend_schema(tags=['book'])
+class BookListCreateAPIView(ListCreateAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    
+    def get_serializer_class(self):
+        if self.request.method == 'GET':
+            return BookSerializer
+        
+        elif self.request.method == "POST":
+            return BookCreateSerializer
+        
 
+@extend_schema(tags=['book/slug'])
 class BookRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     lookup_field = 'slug'
 
-    def get_serializer(self, *args, **kwargs):
-
-        if self.request.method == "PUT":
-            serializer = BookUpdateSerializer(data=self.request.data)
-            
-            if serializer.is_valid():
-                serializer.save()
-
-                return Response(
-                    status=status.HTTP_200_OK,
-                    data=serializer.data
-                )
-                
-            return Response(
-                status=status.HTTP_400_BAD_REQUEST
-            )
-    
-        elif self.request.method == "DELETE":
-
-            category = Book.objects.filter(slug=self.kwargs['slug']).first()
-            category.delete()
-
-            return Response(
-                status=status.HTTP_204_NO_CONTENT
-            )
-            
+    def get_serializer_class(self):
+        if self.request.method == 'GET':
+            return BookSerializer
         
-        elif self.request.method == "GET":
-            category_obj = Book.objects.filter(slug=self.kwargs['slug']).first()
-            serializer = BookSerializer(category_obj)
-
-            return Response(
-                data=serializer.data,
-                status=status.HTTP_200_OK
-            )
-
-        return super().get_serializer(*args, **kwargs)
+        elif self.request.method == "PUT":
+            return BookUpdateSerializer
