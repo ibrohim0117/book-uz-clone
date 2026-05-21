@@ -28,7 +28,14 @@ class BookSerializer(ModelSerializer):
 
     class Meta:
         model = Book
-        fields = ['id', 'name', 'slug', 'price', 'book_image', 'category', 'info', 'author', 'views']
+        # fields = ['id', 'name', 'slug', 'price', 'book_image', 'category', 'info', 'author', 'views']
+        fields = '__all__'
+
+class BookCreateSerializer(ModelSerializer):
+
+    class Meta:
+        model = Book
+        fields = ['id', 'name', 'slug', 'price', 'count', 'category', 'info', 'author']
 
 
 class CategoryDetailSerializer(ModelSerializer):
@@ -38,6 +45,7 @@ class CategoryDetailSerializer(ModelSerializer):
     class Meta:
         model = Category
         fields = ['id', 'name', 'slug', 'category_image', 'books']
+<<<<<<< HEAD
         
         
 class BookDetailSerializer(serializer.ModelSerializer):
@@ -57,3 +65,17 @@ class CategoryDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ['id', 'name', 'slug', 'category_image', 'books']
+=======
+
+
+
+
+class BookUpdateSerializer(ModelSerializer):
+    book_image = BookImageSerializer(many=True)
+    class Meta:
+        model = Book
+        fields = ['name', 'price', 'book_image', 'about', 'is_active']
+
+
+
+>>>>>>> 8ef0e1980eb06ef74146f7a761dd94e5fd7b0795
