@@ -74,11 +74,3 @@ class BookImage(BaseCreateModel):
 
     def __str__(self):
         return self.book.name
-
-#user modelini yozdim!
-class UserMoodel(AbstractUser, BaseCreateModel):
-    avatar = models.ImageField(upload_to="user_avatar/", blank=True, null=True)
-    phone = models.CharField(max_length=20)
-    
-    def str(self):
-        return self.username
