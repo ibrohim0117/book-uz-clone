@@ -13,7 +13,7 @@ DEBUG = os.getenv("DEBUG")
 
 
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = []
 
 
 
@@ -31,6 +31,7 @@ INSTALLED_APPS = [
 
     # install apps
     'rest_framework',
+    'rest_framework.authtoken',
     'drf_spectacular',
 ]
 
@@ -129,6 +130,13 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 REST_FRAMEWORK = {
     # YOUR SETTINGS
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+
+
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',     # Basic
+        'rest_framework.authentication.SessionAuthentication',   # Session
+        'rest_framework.authentication.TokenAuthentication',     # Token
+    ]
 }
 
 SPECTACULAR_SETTINGS = {

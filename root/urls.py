@@ -8,6 +8,7 @@ from root import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path("users/", include("users.urls")),
 
     path('api/v1/product/', include('product.urls')),
     path('api/v1/user/', include('users.urls')),
