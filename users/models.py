@@ -17,7 +17,7 @@ class Users(AbstractUser):
 
     phone = models.CharField(max_length=23, unique=True)
     avatar = models.ImageField(upload_to="users/", blank=True, null=True)
-    role = models.CharField(max_length="15", choices=RoleChoices.choices, default=RoleChoices.CLIENT)
+    role = models.CharField(max_length=15, choices=RoleChoices.choices, default=RoleChoices.CLIENT)
     about = models.TextField(blank=True, null=True)
     theme_dark = models.BooleanField(default=False)
     social_network = models.ForeignKey(SocialNetwork, on_delete=models.CASCADE, related_name='social_network', null=True, blank=True)
