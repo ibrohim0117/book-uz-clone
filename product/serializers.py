@@ -1,81 +1,68 @@
-from drf_spectacular import serializers
-from rest_framework.serializers import ModelSerializer, Serializer
-from yaml import serializer
+from rest_framework import serializers
 from .models import Category, Book, BookImage
 
 
-class CategorySerializer(ModelSerializer):
+class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ['id', 'name', 'slug', 'category_image']
 
 
-class CategoryUpdateSerializer(ModelSerializer):
+class CategoryUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ['name', 'category_image']
 
 
-class BookImageSerializer(ModelSerializer):
+class BookImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = BookImage
         fields = ['id', 'image']
 
 
-class BookSerializer(ModelSerializer):
-
-    book_image = BookImageSerializer(many=True)
+class BookSerializer(serializers.ModelSerializer):
+    book_image = BookImageSerializer(many=True, read_only=True)
 
     class Meta:
         model = Book
-        # fields = ['id', 'name', 'slug', 'price', 'book_image', 'category', 'info', 'author', 'views']
         fields = '__all__'
 
-class BookCreateSerializer(ModelSerializer):
 
+class BookCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Book
         fields = ['id', 'name', 'slug', 'price', 'count', 'category', 'info', 'author']
 
 
-class CategoryDetailSerializer(ModelSerializer):
-
-    books = BookSerializer(many=True)
-
-    class Meta:
-        model = Category
-        fields = ['id', 'name', 'slug', 'category_image', 'books']
-<<<<<<< HEAD
-        
-        
-class BookDetailSerializer(serializer.ModelSerializer):
-    category_name = serializer.SerializerMethodField()
+class BookDetailSerializer(serializers.ModelSerializer):
+    category_name = serializers.SerializerMethodField()
     
     class Meta:
         model = Book
-        fields = ['id', 'name', 'slug', 'price', 'about', 'count', 'is_active', 'category_name', 'info', 'author', 'views']
+        fields = [
+            'id', 'name', 'slug', 'price', 'about', 'count', 
+            'is_active', 'category_name', 'info', 'author', 'views'
+        ]
         
-        def get_category_name(self, obj):     
+    # Meta klassidan tashqariga (to'g'ri joyga) chiqarildi
+    def get_category_name(self, obj):     
+        if obj.category:
             return obj.category.name 
-        
-        
+        return None
+
+
+# Ikki marta yozilgan edi, oxirgi to'g'ri varianti qoldirildi
 class CategoryDetailSerializer(serializers.ModelSerializer):
     books = BookDetailSerializer(many=True, read_only=True)
     
     class Meta:
         model = Category
         fields = ['id', 'name', 'slug', 'category_image', 'books']
-=======
 
 
+class BookUpdateSerializer(serializers.ModelSerializer):
+    book_image = BookImageSerializer(many=True, read_only=True)
 
-
-class BookUpdateSerializer(ModelSerializer):
-    book_image = BookImageSerializer(many=True)
     class Meta:
         model = Book
         fields = ['name', 'price', 'book_image', 'about', 'is_active']
-
-
-
->>>>>>> 8ef0e1980eb06ef74146f7a761dd94e5fd7b0795

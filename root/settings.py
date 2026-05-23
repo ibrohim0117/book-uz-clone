@@ -1,17 +1,15 @@
 import os
 from pathlib import Path
+import django
 from dotenv import load_dotenv
-
 load_dotenv()
-
 BASE_DIR = Path(__file__).resolve().parent.parent
-SECRET_KEY = os.getenv("SECRET_KEY")
 
-DEBUG = os.getenv("DEBUG")
-ALLOWED_HOSTS = []
+SECRET_KEY = os.getenv("SECRET_KEY", "django-insecure-123456789-default-key-for-local")
 
-
-AUTH_USER_MODEL = 'product.UserMoodel' 
+DEBUG = True
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
+AUTH_USER_MODEL = 'users.Users' 
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -20,6 +18,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
+    # basic apps
+    'rest_framework.authtoken',
 
     # my apps
     'product',
@@ -29,6 +30,14 @@ INSTALLED_APPS = [
     'rest_framework',
     'drf_spectacular',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -60,14 +69,15 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'root.wsgi.application'
 
+# Postgres ma'lumotlar bazasi (agar kerak bo'lsa yoqasiz, .env faylingizdagi kalit nomi o'zgartirildi)
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql',
 #         'NAME': os.getenv("DB_NAME"),        
 #         'USER': os.getenv("DB_USER"),       
-#         'PASSWORD': os.getenv("DB_PASSWORD"), 
-#         'HOST': os.getenv("DB_HOST"),
-#         'PORT': os.getenv("DB_PORT"),
+#         'PASSWORD': os.getenv("DB_USER_PASSWORD"), # Rasmda DB_USER_PASSWORD edi, o'shanga moslandi
+#         'HOST': os.getenv("DB_HOST", "localhost"),
+#         'PORT': os.getenv("DB_PORT", "5432"),
 #     }
 # }
 

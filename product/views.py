@@ -26,14 +26,12 @@ class CategoryRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     queryset = Category.objects.all()
     serializer_class = CategoryDetailSerializer
     lookup_field = 'slug'
-<<<<<<< HEAD
     
     
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     lookup_field = 'slug'
-=======
 
     def get_serializer_class(self):
         if self.request.method == 'GET':
@@ -68,4 +66,3 @@ class BookRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
         
         elif self.request.method == "PUT":
             return BookUpdateSerializer
->>>>>>> 8ef0e1980eb06ef74146f7a761dd94e5fd7b0795
