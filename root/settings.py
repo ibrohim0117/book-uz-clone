@@ -131,10 +131,12 @@ AUTH_USER_MODEL = 'users.Users'
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
     ],
     # YOUR SETTINGS
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
+
 
 SPECTACULAR_SETTINGS = {
     'TITLE': 'Book uz clone',
