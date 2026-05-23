@@ -2,38 +2,61 @@ from rest_framework.generics import (
     CreateAPIView, ListAPIView,
     ListCreateAPIView, RetrieveUpdateDestroyAPIView
 )
-from rest_framework.response import Response
-
+from drf_spectacular.utils import extend_schema
 from rest_framework.decorators import api_view
+from rest_framework.response import Response
 from rest_framework import status
 
 from .models import Category, Book
 from .serializers import (
     CategorySerializer, CategoryDetailSerializer,
-    CategoryUpdateSerializer
+    CategoryUpdateSerializer, BookSerializer, BookUpdateSerializer,
+    BookCreateSerializer
 )
 
 
+@extend_schema(tags=['category'])
 class CategoryListCreateAPIView(ListCreateAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    
 
-
+@extend_schema(tags=['category/slug'])
 class CategoryRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     queryset = Category.objects.all()
+    serializer_class = CategoryDetailSerializer
     lookup_field = 'slug'
 
     def get_serializer_class(self):
-        if self.request.method in ['PUT', 'PATCH']:
-            return CategoryUpdateSerializer
-        return CategoryDetailSerializer
-    
-    def update(self, request, *args, **kwargs):
-        partial = kwargs.pop('partial', False)
-        instance = self.get_object()
-        serializer = self.get_serializer(instance, data=request.data, partial=partial)
-        serializer.is_valid(raise_exception=True)
-        self.perform_update(serializer)
+        if self.request.method == 'GET':
+            return CategoryDetailSerializer
         
-        detail_serializer = CategoryDetailSerializer(instance)
-        return Response(detail_serializer.data)
+        elif self.request.method == "PUT":
+            return CategoryUpdateSerializer
+
+
+@extend_schema(tags=['book'])
+class BookListCreateAPIView(ListCreateAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    
+    def get_serializer_class(self):
+        if self.request.method == 'GET':
+            return BookSerializer
+        
+        elif self.request.method == "POST":
+            return BookCreateSerializer
+        
+
+@extend_schema(tags=['book/slug'])
+class BookRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    lookup_field = 'slug'
+
+    def get_serializer_class(self):
+        if self.request.method == 'GET':
+            return BookSerializer
+        
+        elif self.request.method == "PUT":
+            return BookUpdateSerializer

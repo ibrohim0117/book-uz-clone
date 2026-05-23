@@ -2,7 +2,8 @@ from django.contrib import admin
 from .models import Category, Book, BookImage, Author
 
 
-class BookImageInline(admin.TabularInline):
+class BookImageInline(admin.StackedInline):
+   
     model = BookImage
     extra = 1
 
@@ -15,10 +16,10 @@ class CategoryAdmin(admin.ModelAdmin):
         "parent",
         "created_at",
     )
+    readonly_fields = ("slug", ) 
     search_fields = ("name",)
-    list_filter = ("created_at",)
-    prepopulated_fields = {"slug": ("name",)}
-
+    
+    
 
 @admin.register(Author)
 class AuthorAdmin(admin.ModelAdmin):
@@ -44,12 +45,7 @@ class BookAdmin(admin.ModelAdmin):
         "created_at",
     )
 
-    list_filter = (
-        "is_active",
-        "category",
-        "author",
-        "created_at",
-    )
+    
 
     search_fields = (
         "name",

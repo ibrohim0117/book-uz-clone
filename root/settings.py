@@ -135,7 +135,7 @@ REST_FRAMEWORK = {
 
 SPECTACULAR_SETTINGS = {
     'TITLE': 'Book uz clone',
-    'DESCRIPTION': 'Your project description',
+    'DESCRIPTION': 'Book uz clone API documentation',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
     
