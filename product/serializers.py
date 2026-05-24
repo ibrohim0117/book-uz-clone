@@ -57,6 +57,7 @@ class BookUpdateSerializer(ModelSerializer):
     class Meta:
         model = Book
         fields = ['name', 'price', 'book_image', 'about', 'is_active']
+        read_only_fields = ['added_user']
 
 
 
