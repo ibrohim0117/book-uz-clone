@@ -39,6 +39,9 @@ class CategoryViewSet(viewsets.ModelViewSet):
         
         elif self.request.method == "PUT":
             return CategoryUpdateSerializer
+        
+        else:
+            return self.serializer_class
 
 
 @extend_schema(tags=['book'])
@@ -66,3 +69,6 @@ class BookRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
         
         elif self.request.method == "PUT":
             return BookUpdateSerializer
+        
+        else:
+            return self.serializer_class

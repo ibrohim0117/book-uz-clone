@@ -2,17 +2,9 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from product.models import BaseCreateModel
 
-#user model
-class Users(AbstractUser):
-    class UserTypes(models.TextChoices):
-        Admin = 'Admin', 'Admin'
-        OPERATOR = 'Operator', 'Operator'
-        CLENT = 'Clent', 'Mijoz'
-        
-    avatar = models.ImageField(upload_to='avatar/', blank=True, null=True)
-    user_type = models.CharField(max_length=500, choices=UserTypes.choices, default=UserTypes.CLENT)
-    phone = models.CharField(max_length=50, blank=True, null=True)
-    address = models.CharField(max_length=500, blank=True, null=True)
+class Users(AbstractUser, BaseCreateModel):
+    avatar = models.ImageField(upload_to="user_avatar/", blank=True, null=True)
+    phone = models.CharField(max_length=20)
     
     def __str__(self):
         return self.username
