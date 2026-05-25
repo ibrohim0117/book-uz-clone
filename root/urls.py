@@ -6,7 +6,6 @@ from root import settings
 from rest_framework.routers import DefaultRouter  
 from rest_framework.authtoken import views as drf_views 
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
-
 from product import views as product_views
 from product.views import CategoryListCreateAPIView, CategoryViewSet
 
