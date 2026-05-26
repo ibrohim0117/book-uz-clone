@@ -2,10 +2,14 @@ from rest_framework.generics import (
     CreateAPIView, ListAPIView,
     ListCreateAPIView, RetrieveUpdateDestroyAPIView
 )
+
+from rest_framework.authentication import BasicAuthentication
+
 from drf_spectacular.utils import extend_schema
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework import permissions
 
 from .models import Category, Book
 from .serializers import (
@@ -19,6 +23,8 @@ from .serializers import (
 class CategoryListCreateAPIView(ListCreateAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    permission_classes = [permissions.IsAuthenticated, ]
+
     
 
 @extend_schema(tags=['category/slug'])

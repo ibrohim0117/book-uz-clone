@@ -8,12 +8,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 
-SECRET_KEY = os.getenv("SECRET_KEY")
-DEBUG = os.getenv("DEBUG")
+SECRET_KEY="3kiev6p+ii!$(5b#+4v&k=0v=rxxlbu)=m8v1$5$t+k12nu699"
+DEBUG=True
 
 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 
@@ -31,7 +31,6 @@ INSTALLED_APPS = [
 
     # install apps
     'rest_framework',
-    'rest_framework.authtoken',
     'drf_spectacular',
 ]
 
@@ -132,17 +131,12 @@ AUTH_USER_MODEL = 'users.Users'
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
     ],
     # YOUR SETTINGS
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
-
-
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.BasicAuthentication',     # Basic
-        'rest_framework.authentication.SessionAuthentication',   # Session
-        'rest_framework.authentication.TokenAuthentication',     # Token
-    ]
 }
+
 
 SPECTACULAR_SETTINGS = {
     'TITLE': 'Book uz clone',

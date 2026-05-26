@@ -1,20 +1,3 @@
-<<<<<<< HEAD
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
-
-
-class UserProfileView(APIView):
-    # Basic Authentication ishlaydi
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request):
-        return Response({
-            "id": request.user.id,
-            "username": request.user.username,
-            "email": request.user.email
-        })
-=======
 from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -66,4 +49,4 @@ class RegisterCreateAPIView(CreateAPIView):
     queryset = Users.objects.all()
     serializer_class = RegisterSerializer
     
->>>>>>> 03f833d31d57268116088f6a4ec0b3c7a62c6afd
+
