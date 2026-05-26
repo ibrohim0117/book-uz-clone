@@ -49,3 +49,4 @@ class RegisterCreateAPIView(CreateAPIView):
     queryset = Users.objects.all()
     serializer_class = RegisterSerializer
     
+

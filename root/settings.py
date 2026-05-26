@@ -8,8 +8,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 
-SECRET_KEY = os.getenv("SECRET_KEY")
-DEBUG = os.getenv("DEBUG")
+SECRET_KEY="3kiev6p+ii!$(5b#+4v&k=0v=rxxlbu)=m8v1$5$t+k12nu699"
+DEBUG=True
 
 
 
