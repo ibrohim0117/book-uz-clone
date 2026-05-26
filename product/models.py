@@ -1,7 +1,8 @@
+<<<<<<< HEAD
 import uuid
 from django.db import models
 from django.utils.text import slugify
-
+from django.conf import settings  # Sanoqli settings import qilindi
 
 class BaseCreateModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
@@ -9,7 +10,6 @@ class BaseCreateModel(models.Model):
 
     class Meta:
         abstract = True
-
 
 
 class Category(BaseCreateModel):
@@ -31,7 +31,6 @@ class Category(BaseCreateModel):
         return self.name
 
 
-
 class Author(BaseCreateModel):
     full_name = models.CharField(max_length=40)
     about = models.TextField()
@@ -47,11 +46,19 @@ class Book(BaseCreateModel):
     about = models.TextField()
     count = models.IntegerField()
     is_active = models.BooleanField(default=True)
-    # add_user = models.IntegerField(default=0)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, related_name="books", blank=True, null=True)
     info = models.JSONField(default=dict)
     author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name="author")
     views = models.IntegerField(default=0)
+    
+    # To'g'rilangan joyi: settings.AUTH_USER_MODEL orqali xavfsiz bog'lash
+    added_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL, 
+        on_delete=models.SET_NULL, 
+        related_name="added_books", 
+        blank=True, 
+        null=True
+    )
 
     def __str__(self):
         return self.name
@@ -64,7 +71,6 @@ class Book(BaseCreateModel):
             slugger = f"{slug}-{addon}"
             self.slug = slugger
         return super().save(*args, **kwargs)
-    
 
 
 class BookImage(BaseCreateModel):
@@ -73,5 +79,5 @@ class BookImage(BaseCreateModel):
 
     def __str__(self):
         return self.book.name
-
-
+=======
+>>>>>>> f0f0774ca53d9ea25ab318f0a2b8a636a542212c

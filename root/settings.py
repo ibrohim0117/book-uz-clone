@@ -1,4 +1,3 @@
-import os
 from pathlib import Path
 from dotenv import load_dotenv
 
@@ -8,8 +7,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 
-SECRET_KEY = os.getenv("SECRET_KEY")
-DEBUG = os.getenv("DEBUG")
+<<<<<<< HEAD
+SECRET_KEY = 'django-insecure-qo8(m#4frd9gqm!jxjwr^3)l8!4^le0yce096hq1isqyf9+7cd'
+DEBUG = True
+=======
+SECRET_KEY ='django-insecure-test-key-12345'
+DEBUG =True
+>>>>>>> f0f0774ca53d9ea25ab318f0a2b8a636a542212c
 
 
 
@@ -125,7 +129,6 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-AUTH_USER_MODEL = 'users.Users'
 
 
 REST_FRAMEWORK = {
@@ -133,7 +136,9 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     ],
-    # YOUR SETTINGS
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',  
+    ],
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
