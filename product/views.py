@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from rest_framework.generics import (
     CreateAPIView, ListAPIView, RetrieveUpdateDestroyAPIView
 )
@@ -80,3 +81,5 @@ class BookRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
         if self.request.method in ['PUT', 'PATCH', 'DELETE']:
             return [permissions.IsAdminUser()]
         return [permissions.AllowAny()]
+=======
+>>>>>>> f0f0774ca53d9ea25ab318f0a2b8a636a542212c

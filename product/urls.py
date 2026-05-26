@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from django.urls import path
 
 from .views import (
@@ -14,3 +15,5 @@ urlpatterns = [
     path('books/create/', BookCreateAPIView.as_view(), name="book-create"),
     path('books/<slug:slug>/', BookRetrieveUpdateDestroyAPIView.as_view(), name="book-detail"),
 ]
+=======
+>>>>>>> f0f0774ca53d9ea25ab318f0a2b8a636a542212c

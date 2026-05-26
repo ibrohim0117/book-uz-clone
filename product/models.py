@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import uuid
 from django.db import models
 from django.utils.text import slugify
@@ -78,3 +79,5 @@ class BookImage(BaseCreateModel):
 
     def __str__(self):
         return self.book.name
+=======
+>>>>>>> f0f0774ca53d9ea25ab318f0a2b8a636a542212c

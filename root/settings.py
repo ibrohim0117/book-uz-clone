@@ -7,8 +7,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 
+<<<<<<< HEAD
 SECRET_KEY = 'django-insecure-qo8(m#4frd9gqm!jxjwr^3)l8!4^le0yce096hq1isqyf9+7cd'
 DEBUG = True
+=======
+SECRET_KEY ='django-insecure-test-key-12345'
+DEBUG =True
+>>>>>>> f0f0774ca53d9ea25ab318f0a2b8a636a542212c
 
 
 
