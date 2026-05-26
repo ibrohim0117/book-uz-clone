@@ -1,15 +1,9 @@
 from rest_framework.generics import (
-    CreateAPIView, ListAPIView,
-    ListCreateAPIView, RetrieveUpdateDestroyAPIView
+    CreateAPIView, ListAPIView, RetrieveUpdateDestroyAPIView
 )
-
 from rest_framework.authentication import BasicAuthentication
-
-from drf_spectacular.utils import extend_schema
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from rest_framework import status
 from rest_framework import permissions
+from drf_spectacular.utils import extend_schema
 
 from .models import Category, Book
 from .serializers import (
@@ -20,55 +14,69 @@ from .serializers import (
 
 
 @extend_schema(tags=['category'])
-class CategoryListCreateAPIView(ListCreateAPIView):
+class CategoryListAPIView(ListAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    permission_classes = [permissions.IsAuthenticated, ]
+    permission_classes = [permissions.AllowAny]  
 
-    
+
+@extend_schema(tags=['category'])
+class CategoryCreateAPIView(CreateAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+    authentication_classes = [BasicAuthentication] 
+    permission_classes = [permissions.IsAuthenticated, permissions.IsAdminUser] 
+
 
 @extend_schema(tags=['category/slug'])
 class CategoryRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     queryset = Category.objects.all()
-    serializer_class = CategoryDetailSerializer
     lookup_field = 'slug'
 
     def get_serializer_class(self):
         if self.request.method == 'GET':
             return CategoryDetailSerializer
-        
-        elif self.request.method == "PUT":
+        elif self.request.method in ["PUT", "PATCH"]:
             return CategoryUpdateSerializer
-        
-        else:
-            return self.serializer_class
+        return CategoryDetailSerializer
+
+    def get_permissions(self):
+        if self.request.method in ['PUT', 'PATCH', 'DELETE']:
+            return [permissions.IsAdminUser()]
+        return [permissions.AllowAny()]
 
 
 @extend_schema(tags=['book'])
-class BookListCreateAPIView(ListCreateAPIView):
+class BookListAPIView(ListAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    
-    def get_serializer_class(self):
-        if self.request.method == 'GET':
-            return BookSerializer
-        
-        elif self.request.method == "POST":
-            return BookCreateSerializer
-        
+    permission_classes = [permissions.AllowAny] 
+
+
+@extend_schema(tags=['book'])
+class BookCreateAPIView(CreateAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookCreateSerializer
+    authentication_classes = [BasicAuthentication]  
+    permission_classes = [permissions.IsAuthenticated, permissions.IsAdminUser]  
+
+    def perform_create(self, serializer):
+        serializer.save(added_by=self.request.user)
+
 
 @extend_schema(tags=['book/slug'])
 class BookRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     queryset = Book.objects.all()
-    serializer_class = BookSerializer
     lookup_field = 'slug'
 
     def get_serializer_class(self):
         if self.request.method == 'GET':
             return BookSerializer
-        
-        elif self.request.method == "PUT":
+        elif self.request.method in ["PUT", "PATCH"]:
             return BookUpdateSerializer
-        
-        else:
-            return self.serializer_class
+        return BookSerializer
+
+    def get_permissions(self):
+        if self.request.method in ['PUT', 'PATCH', 'DELETE']:
+            return [permissions.IsAdminUser()]
+        return [permissions.AllowAny()]

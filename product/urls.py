@@ -1,15 +1,16 @@
-from django.urls import path, include
+from django.urls import path
 
 from .views import (
-    CategoryListCreateAPIView, CategoryRetrieveUpdateDestroyAPIView,
-    BookRetrieveUpdateDestroyAPIView, BookListCreateAPIView
+    CategoryListAPIView, CategoryCreateAPIView, CategoryRetrieveUpdateDestroyAPIView,
+    BookListAPIView, BookCreateAPIView, BookRetrieveUpdateDestroyAPIView
 )
 
-
 urlpatterns = [
-    path('category/', CategoryListCreateAPIView.as_view(), name="category-create-list"),
-    path('category/<slug:slug>/', CategoryRetrieveUpdateDestroyAPIView.as_view(), name="category_detail"),
+    path('categories/', CategoryListAPIView.as_view(), name="category-list"),
+    path('categories/create/', CategoryCreateAPIView.as_view(), name="category-create"),
+    path('categories/<slug:slug>/', CategoryRetrieveUpdateDestroyAPIView.as_view(), name="category-detail"),
 
-    path('book/<slug:slug>/', BookRetrieveUpdateDestroyAPIView.as_view(), name="book_detail"),
-    path('book/', BookListCreateAPIView.as_view(), name="book-create-list"),
+    path('books/', BookListAPIView.as_view(), name="book-list"),
+    path('books/create/', BookCreateAPIView.as_view(), name="book-create"),
+    path('books/<slug:slug>/', BookRetrieveUpdateDestroyAPIView.as_view(), name="book-detail"),
 ]
