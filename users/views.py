@@ -13,19 +13,7 @@ from rest_framework.generics import (
 from .serializers import RegisterSerializer
 from .models import Users
 
-@extend_schema(tags=['Login'])
-class Login(APIView):
 
-    authentication_classes = [BasicAuthentication]
-
-
-    def get(self, request, format=None):
-        content = {
-            'user': str(request.user), 
-            'auth': str(request.auth), 
-        }
-        return Response(content)
-    
 
 # @extend_schema(tags=['Register'])
 # class Register(APIView):

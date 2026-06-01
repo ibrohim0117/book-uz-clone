@@ -8,11 +8,11 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 
-from .models import Category, Book
+from .models import Category, Book, Author
 from .serializers import (
     CategorySerializer, CategoryDetailSerializer,
     CategoryUpdateSerializer, BookSerializer, BookUpdateSerializer,
-    BookCreateSerializer
+    BookCreateSerializer, AuthorCreateSerializer
 )
 
 
@@ -96,3 +96,14 @@ class BookRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
         
         else:
             return self.serializer_class
+        
+@extend_schema(tags=["Author"])
+class CategoryListCreateAPIView(ListCreateAPIView):
+
+    queryset = Author.objects.all()
+    serializer_class = AuthorCreateSerializer
+
+    def get_permissions(self):
+        if self.request.method == "GET":
+            return [AllowAny, ]
+        return [IsAuthenticated, IsAdminUser]
