@@ -144,6 +144,7 @@ REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
+
 SPECTACULAR_SETTINGS = {
     'TITLE': 'Book uz clone',
     'DESCRIPTION': 'Your project description',
