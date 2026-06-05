@@ -98,8 +98,9 @@ class BookRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
         else:
             return self.serializer_class
         
+        
 @extend_schema(tags=["Author"])
-class CategoryListCreateAPIView(ListCreateAPIView):
+class AuthorCreateApiView(ListCreateAPIView):
 
     queryset = Author.objects.all()
     serializer_class = AuthorCreateSerializer

@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     # install apps
     'rest_framework',
     'drf_spectacular',
+    'rest_framework_simplejwt.token_blacklist',
 ]
 
 
@@ -156,4 +157,6 @@ CORS_ALLOW_ALL_ORIGINS = True
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=7),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=30),
+    'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': True,
 }

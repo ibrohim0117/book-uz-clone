@@ -10,7 +10,7 @@ from rest_framework.generics import (
     CreateAPIView, ListAPIView
 )
 
-from .serializers import RegisterSerializer
+from .serializers import UserRegisterSerializer
 from .models import Users
 
 
@@ -35,5 +35,6 @@ from .models import Users
 @extend_schema(tags=['Register'])
 class RegisterCreateAPIView(CreateAPIView):
     queryset = Users.objects.all()
-    serializer_class = RegisterSerializer
+    serializer_class = UserRegisterSerializer
+
     
