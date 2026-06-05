@@ -9,10 +9,7 @@ from drf_spectacular.utils import extend_schema
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-<<<<<<< HEAD
 from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
-=======
->>>>>>> 690d64bd57d0b07dfd6f0c93ca2a24a060e6471a
 from rest_framework import permissions
 
 from .models import Category, Book, Author
