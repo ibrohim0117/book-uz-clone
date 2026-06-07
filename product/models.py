@@ -36,9 +36,12 @@ class Category(BaseCreateModel):
 class Author(BaseCreateModel):
     full_name = models.CharField(max_length=40)
     about = models.TextField()
+    add_user = models.ForeignKey(Users, on_delete=models.SET_NULL, blank=True, null=True)
+
 
     def __str__(self):
         return self.full_name
+
 
 
 class Book(BaseCreateModel):
@@ -74,5 +77,3 @@ class BookImage(BaseCreateModel):
 
     def __str__(self):
         return self.book.name
-
-
