@@ -19,6 +19,9 @@ from .serializers import (
     BookCreateSerializer
 )
 
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
+from .permissions import IsAdminRoleUser
+
 
 @extend_schema(tags=['category'])
 class CategoryListCreateAPIView(ListCreateAPIView):
@@ -73,7 +76,7 @@ class BookListCreateAPIView(ListCreateAPIView):
     
     def get_permissions(self):
         if self.request.method == 'POST':
-            return[permissions.IsAuthenticated(), permissions.IsAdminUser()]
+            return[IsAuthenticated(), IsAdminRoleUser()]
         return[permissions.AllowAny()]
     
     #adminni avtomatik saqlaydi useerdan ustoz!

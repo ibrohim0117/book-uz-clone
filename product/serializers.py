@@ -45,14 +45,12 @@ class BookDetailSerializer(serializers.ModelSerializer):
             'is_active', 'category_name', 'info', 'author', 'views'
         ]
         
-    # Meta klassidan tashqariga (to'g'ri joyga) chiqarildi
     def get_category_name(self, obj):     
         if obj.category:
             return obj.category.name 
         return None
 
 
-# Ikki marta yozilgan edi, oxirgi to'g'ri varianti qoldirildi
 class CategoryDetailSerializer(serializers.ModelSerializer):
     books = BookDetailSerializer(many=True, read_only=True)
     

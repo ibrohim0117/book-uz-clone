@@ -36,6 +36,7 @@ class Category(BaseCreateModel):
 class Author(BaseCreateModel):
     full_name = models.CharField(max_length=40)
     about = models.TextField()
+    
 
     def __str__(self):
         return self.full_name
@@ -55,6 +56,7 @@ class Book(BaseCreateModel):
     info = models.JSONField(default=dict)
     author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name="author")
     views = models.IntegerField(default=0)
+    # admin = models
 
     def __str__(self):
         return self.name
