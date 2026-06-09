@@ -3,10 +3,16 @@ from django.contrib.auth.models import AbstractUser
 from product.models import BaseCreateModel
 
 
-class Users(AbstractUser, BaseCreateModel):
-    avatar = models.ImageField(upload_to="user_avatar/", blank=True, null=True)
-    phone = models.CharField(max_length=20)
-    
+class Users(AbstractUser):
+    class RoleChoices(models.TextChoices):
+        ADMIN = "admin", "Admin"
+        CLIENT = "client", "Client"
+
+    phone = models.CharField(max_length=23, unique=True, blank=True, null=True)
+    avatar = models.ImageField(upload_to="users/", blank=True, null=True)
+    role = models.CharField(max_length=15, choices=RoleChoices.choices, default=RoleChoices.CLIENT)
+    about = models.TextField(blank=True, null=True)
+
     def __str__(self):
         return self.username
     

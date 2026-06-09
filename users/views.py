@@ -27,23 +27,6 @@ class Login(APIView):
         return Response(content)
     
 
-# @extend_schema(tags=['Register'])
-# class Register(APIView):
-#     permission_classes = [AllowAny]
-
-#     def post(self, request):
-#         serializer = RegisterSerializer(data=request.data)
-
-#         if serializer.is_valid():
-#             serializer.save()
-
-#             return Response(
-#                 status=status.HTTP_201_CREATED
-#             )
-        
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-
 @extend_schema(tags=['Register'])
 class RegisterCreateAPIView(CreateAPIView):
     queryset = Users.objects.all()
