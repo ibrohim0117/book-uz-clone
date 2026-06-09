@@ -22,23 +22,15 @@ class BookImageSerializer(ModelSerializer):
 
 
 class BookSerializer(ModelSerializer):
-    book_image = BookImageSerializer(many=True)
+    book_image = BookImageSerializer(many=True, read_only=True)
     name = serializers.CharField()
 
     class Meta:
         model = Book
         # fields = ['id', 'name', 'slug', 'price', 'book_image', 'category', 'info', 'author', 'views']
         fields = '__all__'
-        read_only_fields = ['added_user', 'id', 'slug', 'views']
+        read_only_fields = ['add_user', 'id', 'slug', 'views']
 
-
-
-# class BookUpdateSerializer(ModelSerializer):
-#     book_image = BookImageSerializer(many=True)
-#     class Meta:
-#         model = Book
-#         fields = ['name', 'price', 'book_image', 'about', 'is_active']
-#         read_only_fields = ['added_user']
 
 
 

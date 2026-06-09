@@ -34,7 +34,7 @@ class Category(BaseCreateModel):
 
 
 class Author(BaseCreateModel):
-    full_name = models.CharField(max_length=40)
+    full_name = models.CharField(max_length=40, unique=True)
     about = models.TextField()
     add_user = models.ForeignKey(Users, on_delete=models.SET_NULL, blank=True, null=True)
 
@@ -51,10 +51,10 @@ class Book(BaseCreateModel):
     about = models.TextField()
     count = models.IntegerField()
     is_active = models.BooleanField(default=True)
-    add_user = models.ForeignKey(Users, on_delete=models.SET_NULL, blank=True, null=True)
+    add_user = models.ForeignKey(Users, on_delete=models.SET_NULL, blank=True, null=True, related_name="admins")
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, related_name="books", blank=True, null=True)
     info = models.JSONField(default=dict)
-    author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name="author")
+    author = models.ForeignKey(Author, on_delete=models.SET_NULL, related_name="author", blank=True, null=True)
     views = models.IntegerField(default=0)
 
     def __str__(self):

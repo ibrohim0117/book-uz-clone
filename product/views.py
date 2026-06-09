@@ -24,9 +24,9 @@ from .serializers import (
 class CategoryListCreateAPIView(ListCreateAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    filterset_fields = ['name', ]
 
     def get_permissions(self):
-
         if self.request.method == "POST":
             return [IsAuthenticated(), IsAdminRoleUser()]
         
@@ -43,8 +43,8 @@ class CategoryRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     def get_permissions(self):
         if self.request.method == "GET":
             return [AllowAny(), ]            
-        # return [IsAdminRoleUser(), IsAuthenticated()]
-        return [IsAdminUser(), IsAuthenticated()]
+        return [IsAuthenticated(), IsAdminRoleUser()]
+        # return [IsAdminUser(), IsAuthenticated()]
 
     
 
@@ -56,11 +56,11 @@ class BookListCreateAPIView(ListCreateAPIView):
     def get_permissions(self):
         if self.request.method == "GET":
             return [AllowAny(), ]
-        return [IsAdminUser(), IsAuthenticated()]
+        return [IsAuthenticated(), IsAdminRoleUser()]
     
     
     def perform_create(self, serializer):
-        return serializer.save(added_user=self.request.user)
+        return serializer.save(add_user=self.request.user)
 
 
 

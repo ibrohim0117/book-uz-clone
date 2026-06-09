@@ -17,7 +17,6 @@ class UserRegisterSerializer(ModelSerializer):
         return make_password(password)
     
     def to_representation(self, instance):
-
         data = super().to_representation(instance)
         data.update(instance.token())
         return data 
