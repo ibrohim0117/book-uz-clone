@@ -1,6 +1,9 @@
+# install jwt with command: pip install djangorestframework-simplejwt
+
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+from datetime import timedelta
 
 load_dotenv()
 
@@ -8,8 +11,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 
-SECRET_KEY="3kiev6p+ii!$(5b#+4v&k=0v=rxxlbu)=m8v1$5$t+k12nu699"
-DEBUG=True
+SECRET_KEY = 'django-insecure-bu-yerda-tasodifiy-uzun-matn-boladi'
+DEBUG = os.getenv("DEBUG")
 
 
 
@@ -29,13 +32,18 @@ INSTALLED_APPS = [
     'product',
     'users',
 
+    'corsheaders',
+
     # install apps
     'rest_framework',
     'drf_spectacular',
+    'rest_framework_simplejwt.token_blacklist',
 ]
 
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -129,10 +137,9 @@ AUTH_USER_MODEL = 'users.Users'
 
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.BasicAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
-    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
     # YOUR SETTINGS
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
@@ -144,4 +151,13 @@ SPECTACULAR_SETTINGS = {
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
     # OTHER SETTINGS
+}
+
+CORS_ALLOW_ALL_ORIGINS = True
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=7),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=30),
+    'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': True,
 }

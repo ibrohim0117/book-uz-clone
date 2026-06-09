@@ -10,22 +10,10 @@ from rest_framework.generics import (
     CreateAPIView, ListAPIView
 )
 
-from .serializers import RegisterSerializer
+from .serializers import UserRegisterSerializer
 from .models import Users
 
-@extend_schema(tags=['Login'])
-class Login(APIView):
 
-    authentication_classes = [BasicAuthentication]
-
-
-    def get(self, request, format=None):
-        content = {
-            'user': str(request.user), 
-            'auth': str(request.auth), 
-        }
-        return Response(content)
-    
 
 # @extend_schema(tags=['Register'])
 # class Register(APIView):
@@ -47,6 +35,6 @@ class Login(APIView):
 @extend_schema(tags=['Register'])
 class RegisterCreateAPIView(CreateAPIView):
     queryset = Users.objects.all()
-    serializer_class = RegisterSerializer
-    
+    serializer_class = UserRegisterSerializer
 
+  
