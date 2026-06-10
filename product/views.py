@@ -3,12 +3,11 @@ from rest_framework.generics import (
     ListCreateAPIView, RetrieveUpdateDestroyAPIView
 )
 
-from rest_framework.authentication import BasicAuthentication
 from .permissions import IsAdminRoleUser
 
 from drf_spectacular.utils import extend_schema
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import filters
 from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework import permissions
 
@@ -44,7 +43,6 @@ class CategoryRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
         if self.request.method == "GET":
             return [AllowAny(), ]            
         return [IsAuthenticated(), IsAdminRoleUser()]
-        # return [IsAdminUser(), IsAuthenticated()]
 
     
 
@@ -52,6 +50,25 @@ class CategoryRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
 class BookListCreateAPIView(ListCreateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
+    filterset_fields = ['price', ]
+
+    def get_queryset(self):
+        queryset = Book.objects.all()
+        search_query = self.request.query_params.get('search', None)
+        min_price = self.request.query_params.get('min_price', None)
+        max_price = self.request.query_params.get('max_price', None)
+
+        if search_query:
+            queryset = Book.objects.filter(name__icontains=search_query)
+
+        if min_price:
+            queryset = queryset.filter(price__gte=min_price)
+
+        if max_price:
+            queryset = queryset.filter(price__lte=max_price)
+
+            #tips __gte (Greater than or equal to - katta yoki teng) va __lte (Less than or equal to - kichik yoki teng)
+        return queryset 
 
     def get_permissions(self):
         if self.request.method == "GET":

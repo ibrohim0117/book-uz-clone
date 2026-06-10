@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'drf_spectacular',
     'rest_framework_simplejwt.token_blacklist',
+    'django_filters',
 ]
 
 
@@ -155,7 +156,7 @@ SPECTACULAR_SETTINGS = {
     'SERVE_INCLUDE_SCHEMA': False,
     # OTHER SETTINGS
 }
-
+                    
 CORS_ALLOW_ALL_ORIGINS = True
 
 SIMPLE_JWT = {

@@ -10,3 +10,6 @@ secret_key:
 
 admin:
 	python3 manage.py createsuperuser
+
+schema:
+	python manage.py spectacular --file schema.json --format openapi-json
