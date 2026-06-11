@@ -7,7 +7,6 @@ from .permissions import IsAdminRoleUser
 
 from drf_spectacular.utils import extend_schema
 from rest_framework.response import Response
-from rest_framework import filters
 from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework import permissions
 
@@ -90,7 +89,7 @@ class BookRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     def get_permissions(self):
         if self.request.method == "GET":
             return [AllowAny(), ]
-        return [IsAdminUser(), IsAuthenticated()]
+        return [IsAdminRoleUser(), IsAuthenticated()]
 
 
         
@@ -103,7 +102,7 @@ class AuthorCreateApiView(ListCreateAPIView):
     def get_permissions(self):
         if self.request.method == "GET":
             return [AllowAny(), ]
-        return [IsAuthenticated(), IsAdminUser()]
+        return [IsAuthenticated(), IsAdminRoleUser()]
     
 
     def perform_create(self, serializer):
