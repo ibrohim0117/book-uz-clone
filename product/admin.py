@@ -2,10 +2,12 @@ from django.contrib import admin
 from .models import Category, Book, BookImage, Author
 
 
+
 class BookImageInline(admin.StackedInline):
    
     model = BookImage
     extra = 1
+
 
 
 @admin.register(Category)
@@ -31,6 +33,7 @@ class AuthorAdmin(admin.ModelAdmin):
     search_fields = ("full_name",)
 
 
+
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
     list_display = (
@@ -45,8 +48,6 @@ class BookAdmin(admin.ModelAdmin):
         "created_at",
     )
 
-    
-
     search_fields = (
         "name",
         "author__full_name",
@@ -60,6 +61,7 @@ class BookAdmin(admin.ModelAdmin):
     )
 
     inlines = [BookImageInline]
+
 
 
 @admin.register(BookImage)

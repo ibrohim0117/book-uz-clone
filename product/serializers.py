@@ -1,22 +1,14 @@
-from rest_framework.serializers import ModelSerializer, Serializer
+from rest_framework.serializers import ModelSerializer
 from rest_framework import serializers
 
 from .models import Category, Book, BookImage, Author
 
 
-
 class CategorySerializer(ModelSerializer):
     class Meta:
         model = Category
-        fields = ['id', 'name', 'slug', 'category_image']
-
-
-
-class CategoryUpdateSerializer(ModelSerializer):
-    class Meta:
-        model = Category
-        fields = ['name', 'category_image']
-
+        fields = ['id', 'name', 'slug', 'category_image', 'books']
+        read_only_fields = ['id', 'slug', 'books']
 
 
 class BookImageSerializer(ModelSerializer):
@@ -25,9 +17,8 @@ class BookImageSerializer(ModelSerializer):
         fields = ['id', 'image']
 
 
-
 class BookSerializer(ModelSerializer):
-    book_image = BookImageSerializer(many=True)
+    book_image = BookImageSerializer(many=True, read_only=True)
     name = serializers.CharField()
 
     class Meta:
@@ -50,9 +41,9 @@ class CategoryDetailSerializer(ModelSerializer):
         fields = ['id', 'name', 'slug', 'category_image', 'books']
 
 
-
 class BookUpdateSerializer(ModelSerializer):
     book_image = BookImageSerializer(many=True)
+
     class Meta:
         model = Book
         fields = ['name', 'price', 'book_image', 'about', 'is_active']
@@ -63,3 +54,9 @@ class AuthorCreateSerializer(ModelSerializer):
     class Meta:
         model = Author
         fields = "__all__"
+
+
+class CategoryUpdateSerializer(ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ['name', 'parent', 'category_image']

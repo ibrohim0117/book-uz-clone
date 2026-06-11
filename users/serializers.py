@@ -1,4 +1,4 @@
-from rest_framework import serializers 
+from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 from django.contrib.auth.hashers import make_password
 
@@ -14,7 +14,7 @@ class UserRegisterSerializer(ModelSerializer):
 
     def validate_password(self, password):
         return make_password(password)
-    
+
     def to_representation(self, instance):
         data = super().to_representation(instance)
         data.update(instance.token())

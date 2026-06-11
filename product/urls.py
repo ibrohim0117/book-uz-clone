@@ -6,6 +6,7 @@ from .views import (
 )
 
 
+
 urlpatterns = [
     path('category/', CategoryListCreateAPIView.as_view(), name="category-create-list"),
     path('category/<slug:slug>/', CategoryRetrieveUpdateDestroyAPIView.as_view(), name="category_detail"),
