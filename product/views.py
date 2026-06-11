@@ -13,8 +13,9 @@ from rest_framework import permissions
 from .models import Category, Book, Author
 from .serializers import (
     CategorySerializer,BookSerializer,
-    AuthorCreateSerializer
+    AuthorSerializer
 )
+from .filters import FilterMaxMinValue
 
 
 
@@ -49,24 +50,17 @@ class CategoryRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
 class BookListCreateAPIView(ListCreateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    filterset_fields = ['price', ]
+    filterset_class = FilterMaxMinValue
+    
 
     def get_queryset(self):
         queryset = Book.objects.all()
         search_query = self.request.query_params.get('search', None)
-        min_price = self.request.query_params.get('min_price', None)
-        max_price = self.request.query_params.get('max_price', None)
 
         if search_query:
             queryset = Book.objects.filter(name__icontains=search_query)
 
-        if min_price:
-            queryset = queryset.filter(price__gte=min_price)
 
-        if max_price:
-            queryset = queryset.filter(price__lte=max_price)
-
-            #tips __gte (Greater than or equal to - katta yoki teng) va __lte (Less than or equal to - kichik yoki teng)
         return queryset 
 
     def get_permissions(self):
@@ -97,7 +91,7 @@ class BookRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
 class AuthorCreateApiView(ListCreateAPIView):
 
     queryset = Author.objects.all()
-    serializer_class = AuthorCreateSerializer
+    serializer_class = AuthorSerializer
 
     def get_permissions(self):
         if self.request.method == "GET":
@@ -107,3 +101,21 @@ class AuthorCreateApiView(ListCreateAPIView):
 
     def perform_create(self, serializer):
         return serializer.save(added_user=self.request.user)
+    
+
+
+@extend_schema(tags=["Author/slug"])
+class AuthorRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
+    queryset = Author.objects.all()
+    serializer_class = AuthorSerializer
+    lookup_field = 'slug'
+
+    def get_permissions(self):
+        if self.request.method == "GET":
+            return [AllowAny(), ]
+        return [IsAuthenticated(), IsAdminRoleUser()]
+    
+    
+    
+
+    
