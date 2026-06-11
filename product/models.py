@@ -1,8 +1,8 @@
-<<<<<<< HEAD
+
 import uuid
 from django.db import models
 from django.utils.text import slugify
-from django.conf import settings  # Sanoqli settings import qilindi
+from django.conf import settings 
 
 class BaseCreateModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
@@ -51,7 +51,7 @@ class Book(BaseCreateModel):
     author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name="author")
     views = models.IntegerField(default=0)
     
-    # To'g'rilangan joyi: settings.AUTH_USER_MODEL orqali xavfsiz bog'lash
+   
     added_by = models.ForeignKey(
         settings.AUTH_USER_MODEL, 
         on_delete=models.SET_NULL, 
@@ -79,5 +79,4 @@ class BookImage(BaseCreateModel):
 
     def __str__(self):
         return self.book.name
-=======
->>>>>>> f0f0774ca53d9ea25ab318f0a2b8a636a542212c
+

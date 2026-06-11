@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 from rest_framework.serializers import ModelSerializer, Serializer
 from .models import Category, Book, BookImage
 
@@ -49,5 +49,4 @@ class BookUpdateSerializer(ModelSerializer):
     class Meta:
         model = Book
         fields = ['name', 'price', 'book_image', 'about', 'is_active']
-=======
->>>>>>> f0f0774ca53d9ea25ab318f0a2b8a636a542212c
+
