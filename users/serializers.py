@@ -35,4 +35,7 @@ class UserProfileSerializer(ModelSerializer):
 
     class Meta:
         model = Users
-        fields = ['phone', 'avatar', 'first_name', 'about', 'date_joined', 'social_acc_list']
+        fields = [
+            'phone', 'avatar', 'full_name', 'about', 'date_joined',
+            'social_acc_list', 'username'
+            ]

@@ -24,7 +24,7 @@ class RegisterCreateAPIView(CreateAPIView):
 @extend_schema(tags=['User/Profile'])
 class ProfileRetrieveAPIView(RetrieveAPIView):
     serializer_class = UserProfileSerializer
-    authentication_classes = [JWTAuthentication]
+    # authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
 
     def get_object(self):

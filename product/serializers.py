@@ -9,7 +9,7 @@ from .models import Category, Book, BookImage, Author
 class CategorySerializer(ModelSerializer):
     class Meta:
         model = Category
-        fields = ['id', 'name', 'slug', 'category_image', 'books']
+        fields = ['id', 'name', 'slug', 'category_image', 'books', 'parent']
         read_only_fields = ['id', 'slug', 'books']
 
 
@@ -27,7 +27,6 @@ class BookSerializer(ModelSerializer):
 
     class Meta:
         model = Book
-        # fields = ['id', 'name', 'slug', 'price', 'book_image', 'category', 'info', 'author', 'views']
         fields = '__all__'
         read_only_fields = ['add_user', 'id', 'slug', 'views']
 
