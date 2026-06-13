@@ -2,7 +2,7 @@ from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 from django.contrib.auth.hashers import make_password
 
-from .models import Users
+from .models import Users, SocialNetwork
 
 
 
@@ -19,4 +19,20 @@ class UserRegisterSerializer(ModelSerializer):
     def to_representation(self, instance):
         data = super().to_representation(instance)
         data.update(instance.token())
-        return data 
+        return data
+    
+
+class SocialAccountSerializer(ModelSerializer):
+
+    class Meta:
+        model = SocialNetwork
+        fields = "__all__"
+
+
+class UserProfileSerializer(ModelSerializer):
+    social_acc_list = SocialAccountSerializer(many=True)
+
+
+    class Meta:
+        model = Users
+        fields = ['phone', 'avatar', 'first_name', 'about', 'date_joined', 'social_acc_list']
