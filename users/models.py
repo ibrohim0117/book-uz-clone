@@ -1,38 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from rest_framework_simplejwt.tokens import RefreshToken
-from django.contrib.auth.hashers import make_password
-
-class User(AbstractUser):
-    
-    email = models.EmailField(
-        unique=True,
-        error_messages={
-            'unique': "Bu email manzili allaqachon ro'yxatdan o'tgan.",
-        },
-        verbose_name="Email manzili"
-    )
-    
-    phone_number = models.CharField(
-        max_length=15, 
-        blank=True, 
-        null=True, 
-        verbose_name="Telefon raqami"
-    )
-    
-    created_at = models.DateTimeField(
-        auto_now_add=True, 
-        verbose_name="Ro'yxatdan o'tgan sana"
-    )
-
-    class Meta:
-        verbose_name = "Foydalanuvchi"
-        verbose_name_plural = "Foydalanuvchilar"
-        db_table = 'users_user' 
-
-    def __str__(self):
-        return self.username
-
 
 
 class Users(AbstractUser):
@@ -40,28 +8,36 @@ class Users(AbstractUser):
         ADMIN = "admin", "Admin"
         CLIENT = "client", "Client"
 
-    phone = models.CharField(max_length=23, unique=True, blank=True, null=True)
+    email = models.EmailField(
+        unique=True,
+        error_messages={
+            'unique': "Bu email manzili allaqachon ro'yxatdan o'tgan.",
+        },
+        verbose_name="Email manzili"
+    )
+
+    phone_number = models.CharField(max_length=23, blank=True, null=True)
     avatar = models.ImageField(upload_to="users/", blank=True, null=True)
     role = models.CharField(max_length=15, choices=RoleChoices.choices, default=RoleChoices.CLIENT)
     about = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Foydalanuvchi"
+        verbose_name_plural = "Foydalanuvchilar"
+        db_table = 'users_user'
 
     def token(self):
-
         refresh = RefreshToken.for_user(self)
-        access = str(refresh.access_token)
-
-        data = {
-            'access':access,
-            'refresh':str(refresh)
+        return {
+            'access': str(refresh.access_token),
+            'refresh': str(refresh)
         }
-
-        return data
-    
 
     def __str__(self):
         return self.username
-    
-    
+
+
 
 class SocialNetwork(models.Model):
     title = models.CharField(max_length=250)

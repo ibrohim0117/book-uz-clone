@@ -11,12 +11,15 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework import permissions
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter
 
 from .models import Category, Book, Author
 from .serializers import (
     CategorySerializer,BookSerializer,
     AuthorCreateSerializer
 )
+from .filter import BookFilter
 
 
 
@@ -52,6 +55,9 @@ class CategoryRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
 class BookListCreateAPIView(ListCreateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
+    filter_backends = [DjangoFilterBackend, SearchFilter]
+    filterset_class = BookFilter
+    search_fields = ['name', 'about']
 
     def get_permissions(self):
         if self.request.method == "GET":
@@ -90,4 +96,16 @@ class AuthorCreateApiView(ListCreateAPIView):
     
 
     def perform_create(self, serializer):
-        return serializer.save(added_user=self.request.user)
+        return serializer.save(add_user=self.request.user)
+
+
+
+@extend_schema(tags=["Author"])
+class AuthorRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
+    queryset = Author.objects.all()
+    serializer_class = AuthorCreateSerializer
+
+    def get_permissions(self):
+        if self.request.method == "GET":
+            return [AllowAny(), ]
+        return [IsAuthenticated(), IsAdminUser()]
