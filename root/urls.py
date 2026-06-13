@@ -7,10 +7,9 @@ from rest_framework.routers import DefaultRouter
 from rest_framework.authtoken import views as drf_views 
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 from product import views as product_views
-from product.views import CategoryListCreateAPIView, CategoryViewSet
+from product.views import CategoryListCreateAPIView
 
 router = DefaultRouter()  
-router.register(r'category', CategoryViewSet, basename='category')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
