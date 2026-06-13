@@ -85,8 +85,8 @@ class BookRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
             return [AllowAny(), ]
         return [IsAdminRoleUser(), IsAuthenticated()]
 
-
-        
+    
+     
 @extend_schema(tags=["Author"])
 class AuthorCreateApiView(ListCreateAPIView):
 

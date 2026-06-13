@@ -34,7 +34,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/PaginatedAuthorCreateList"
+                                    "$ref": "#/components/schemas/PaginatedAuthorList"
                                 }
                             }
                         },
@@ -51,17 +51,17 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/AuthorCreate"
+                                "$ref": "#/components/schemas/Author"
                             }
                         },
                         "application/x-www-form-urlencoded": {
                             "schema": {
-                                "$ref": "#/components/schemas/AuthorCreate"
+                                "$ref": "#/components/schemas/Author"
                             }
                         },
                         "multipart/form-data": {
                             "schema": {
-                                "$ref": "#/components/schemas/AuthorCreate"
+                                "$ref": "#/components/schemas/Author"
                             }
                         }
                     },
@@ -77,11 +77,178 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/AuthorCreate"
+                                    "$ref": "#/components/schemas/Author"
                                 }
                             }
                         },
                         "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/product/author/{slug}": {
+            "get": {
+                "operationId": "api_v1_product_author_retrieve",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "slug",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "Author/slug"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    },
+                    {}
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Author"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "put": {
+                "operationId": "api_v1_product_author_update",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "slug",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "Author/slug"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Author"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Author"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Author"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Author"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "patch": {
+                "operationId": "api_v1_product_author_partial_update",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "slug",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "Author/slug"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedAuthor"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedAuthor"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedAuthor"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Author"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "api_v1_product_author_destroy",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "slug",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "Author/slug"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No response body"
                     }
                 }
             }
@@ -91,19 +258,26 @@
                 "operationId": "api_v1_product_book_list",
                 "parameters": [
                     {
+                        "in": "query",
+                        "name": "max_price",
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "min_price",
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
                         "name": "page",
                         "required": false,
                         "in": "query",
                         "description": "A page number within the paginated result set.",
                         "schema": {
                             "type": "integer"
-                        }
-                    },
-                    {
-                        "in": "query",
-                        "name": "price",
-                        "schema": {
-                            "type": "number"
                         }
                     }
                 ],
@@ -717,6 +891,31 @@
                 }
             }
         },
+        "/api/v1/user/profile/": {
+            "get": {
+                "operationId": "api_v1_user_profile_retrieve",
+                "tags": [
+                    "User/Profile"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserProfile"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
         "/api/v1/user/register/": {
             "post": {
                 "operationId": "api_v1_user_register_create",
@@ -766,7 +965,7 @@
     },
     "components": {
         "schemas": {
-            "AuthorCreate": {
+            "Author": {
                 "type": "object",
                 "properties": {
                     "id": {
@@ -938,7 +1137,7 @@
                     "slug"
                 ]
             },
-            "PaginatedAuthorCreateList": {
+            "PaginatedAuthorList": {
                 "type": "object",
                 "required": [
                     "count",
@@ -964,7 +1163,7 @@
                     "results": {
                         "type": "array",
                         "items": {
-                            "$ref": "#/components/schemas/AuthorCreate"
+                            "$ref": "#/components/schemas/Author"
                         }
                     }
                 }
@@ -1028,6 +1227,36 @@
                         "items": {
                             "$ref": "#/components/schemas/Category"
                         }
+                    }
+                }
+            },
+            "PatchedAuthor": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "full_name": {
+                        "type": "string",
+                        "maxLength": 40
+                    },
+                    "about": {
+                        "type": "string"
+                    },
+                    "add_user": {
+                        "type": "integer",
+                        "nullable": true
                     }
                 }
             },
@@ -1130,6 +1359,45 @@
                     }
                 }
             },
+            "SocialAccount": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "title": {
+                        "type": "string",
+                        "maxLength": 250
+                    },
+                    "url": {
+                        "type": "string",
+                        "format": "uri",
+                        "maxLength": 500
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "user": {
+                        "type": "integer"
+                    }
+                },
+                "required": [
+                    "created_at",
+                    "id",
+                    "title",
+                    "updated_at",
+                    "url",
+                    "user"
+                ]
+            },
             "TokenBlacklist": {
                 "type": "object",
                 "properties": {
@@ -1183,6 +1451,44 @@
                 "required": [
                     "access",
                     "refresh"
+                ]
+            },
+            "UserProfile": {
+                "type": "object",
+                "properties": {
+                    "phone": {
+                        "type": "string",
+                        "nullable": true,
+                        "maxLength": 23
+                    },
+                    "avatar": {
+                        "type": "string",
+                        "format": "uri",
+                        "nullable": true
+                    },
+                    "first_name": {
+                        "type": "string",
+                        "maxLength": 150
+                    },
+                    "about": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "date_joined": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "social_acc_list": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/SocialAccount"
+                        }
+                    }
+                },
+                "required": [
+                    "date_joined",
+                    "social_acc_list"
                 ]
             },
             "UserRegister": {

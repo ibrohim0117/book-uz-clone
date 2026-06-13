@@ -7,10 +7,11 @@ from drf_spectacular.utils import extend_schema
 from rest_framework_simplejwt.authentication import  JWTAuthentication
 
 from rest_framework.generics import (
-    CreateAPIView, ListAPIView, RetrieveAPIView
+    CreateAPIView, RetrieveUpdateDestroyAPIView,
+    RetrieveAPIView,
 )
 
-from .serializers import UserRegisterSerializer, UserProfileSerializer
+from .serializers import UserRegisterSerializer, UserProfileSerializer, SocialAccountSerializer
 from .models import Users
 
 
