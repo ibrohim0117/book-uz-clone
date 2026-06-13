@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from rest_framework_simplejwt.tokens import RefreshToken
+from django.contrib.auth.hashers import make_password
 
 
 
@@ -13,8 +15,22 @@ class Users(AbstractUser):
     role = models.CharField(max_length=15, choices=RoleChoices.choices, default=RoleChoices.CLIENT)
     about = models.TextField(blank=True, null=True)
 
+    def token(self):
+
+        refresh = RefreshToken.for_user(self)
+        access = str(refresh.access_token)
+
+        data = {
+            'access':access,
+            'refresh':str(refresh)
+        }
+
+        return data
+    
+
     def __str__(self):
         return self.username
+    
     
 
 class SocialNetwork(models.Model):
