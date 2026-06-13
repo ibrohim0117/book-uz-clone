@@ -12,12 +12,12 @@ from rest_framework import filters
 from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework import permissions
 from drf_spectacular.utils import extend_schema
-from .models import Category, Book
 from .models import Category, Book, Author
+from users.models import Users
 from .serializers import (
     CategorySerializer,BookSerializer,
     AuthorCreateSerializer, CategoryDetailSerializer, CategoryUpdateSerializer,
-    BookCreateSerializer, BookUpdateSerializer, 
+    BookCreateSerializer, BookUpdateSerializer, UserProfileSerializer, AuthorSerializer
 )
 
 
@@ -167,4 +167,14 @@ class AuthorCreateApiView(ListCreateAPIView):
 
     def perform_create(self, serializer):
         return serializer.save(added_user=self.request.user)
+    
+
+class AuthorRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
+    queryset = Author.objects.all()
+    serializer_class = AuthorSerializer
+
+
+class UserProfileRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
+    queryset = Users.objects.all()
+    serializer_class = UserProfileSerializer
 

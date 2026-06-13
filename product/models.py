@@ -1,9 +1,9 @@
-
 import uuid
 from django.db import models
 from django.utils.text import slugify
 from django.conf import settings 
 from users.models import Users
+from django.contrib.auth.models import AbstractUser
 
 class BaseCreateModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
@@ -84,4 +84,7 @@ class BookImage(BaseCreateModel):
 
     def __str__(self):
         return self.book.name
+    
+
+
 

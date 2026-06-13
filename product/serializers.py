@@ -3,6 +3,7 @@ from .models import Category, Book, BookImage
 from rest_framework.serializers import ModelSerializer
 from rest_framework import serializers
 from .models import Category, Book, BookImage, Author
+from users.models import Users
 
 
 
@@ -68,3 +69,14 @@ class AuthorCreateSerializer(ModelSerializer):
         model = Author
         fields = "__all__"
 
+
+class AuthorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Author
+        fields = '__all__'  
+
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Users
+        fields = '__all__'
