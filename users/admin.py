@@ -9,6 +9,8 @@ class SocialNetworkAdmin(admin.ModelAdmin):
     search_fields = ['title', ]
 
 
-
-admin.site.register(Users)
-
+@admin.register(Users)
+class UserAdmin(admin.ModelAdmin):
+    list_display = ['username', 'full_name', 'phone', 'role', 'is_active', 'id']
+    search_fields = ['username', 'first_name', 'phone']
+    list_editable = ['role', 'is_active']

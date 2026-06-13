@@ -31,6 +31,10 @@ class Users(AbstractUser):
 
     def __str__(self):
         return self.username
+
+    @property
+    def full_name(self):
+        return f"{self.first_name} {self.last_name}"
     
     
 

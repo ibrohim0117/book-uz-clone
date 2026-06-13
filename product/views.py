@@ -2,9 +2,6 @@ from rest_framework.generics import (
     CreateAPIView, ListAPIView,
     ListCreateAPIView, RetrieveUpdateDestroyAPIView
 )
-
-from .permissions import IsAdminRoleUser
-
 from drf_spectacular.utils import extend_schema
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
@@ -16,6 +13,8 @@ from .serializers import (
     AuthorSerializer
 )
 from .filters import FilterMaxMinValue
+from .permissions import IsAdminRoleUser
+
 
 
 
@@ -52,16 +51,15 @@ class BookListCreateAPIView(ListCreateAPIView):
     serializer_class = BookSerializer
     filterset_class = FilterMaxMinValue
     
+    # def get_queryset(self):
+    #     queryset = Book.objects.all()
+    #     search_query = self.request.query_params.get('search', None)
 
-    def get_queryset(self):
-        queryset = Book.objects.all()
-        search_query = self.request.query_params.get('search', None)
-
-        if search_query:
-            queryset = Book.objects.filter(name__icontains=search_query)
+    #     if search_query:
+    #         queryset = Book.objects.filter(name__icontains=search_query)
 
 
-        return queryset 
+    #     return queryset 
 
     def get_permissions(self):
         if self.request.method == "GET":
