@@ -54,7 +54,7 @@ class SocialNetwork(models.Model):
 
 class Cart(models.Model):
     user = models.ForeignKey(Users, on_delete=models.CASCADE, related_name="user_cart")
-    book = models.ForeignKey('product.Book', on_delete=models.SET_NULL, related_name="cart_item", null=True)
+    book = models.ForeignKey('product.Book', on_delete=models.CASCADE, related_name="cart_item", null=True)
     count = models.PositiveIntegerField(default=1)
     created_at = models.DateTimeField(auto_now_add=True)
 

@@ -34,6 +34,12 @@ class UserRegisterSerializer(ModelSerializer):
         return data
 
 
+class SocialAccountListSerializer(ModelSerializer):
+    class Meta:
+        model = SocialNetwork
+        fields = '__all__'
+
+
 
 class SocialAccountSerializer(ModelSerializer):
 
@@ -43,7 +49,6 @@ class SocialAccountSerializer(ModelSerializer):
         read_only_fields = ['created_at', 'updated_at', 'uuid', 'user']
 
         
-
     def validate(self, attrs):
         url = attrs.get('url')
         title = attrs.get('title')
@@ -55,6 +60,8 @@ class SocialAccountSerializer(ModelSerializer):
             attrs['title'] = title.strip().lower().replace(' ', '-')
 
         return super().validate(attrs)
+
+# Instagram sahifam -> instagram-saifam
         
 
 
@@ -69,11 +76,12 @@ class UserProfileSerializer(ModelSerializer):
             'phone', 'avatar', 'full_name', 'about', 'date_joined',
             'social_acc_list', 'username'
             ]
+        read_only_fields = ['username', 'social_acc_list']
     
-    def validate(self, attrs):
-        if not validate_https_url(attrs['social_acc_list']):
-            raise serializers.ValidationError("Sahifa formati xato !, https:// bo'lishi shart! ")
-        return super().validate(attrs)
+    # def validate(self, attrs):
+    #     if not validate_https_url(attrs['social_acc_list']):
+    #         raise serializers.ValidationError("Sahifa formati xato !, https:// bo'lishi shart! ")
+    #     return super().validate(attrs)
     
         
 

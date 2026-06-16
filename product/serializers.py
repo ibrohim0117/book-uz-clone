@@ -2,6 +2,7 @@ from rest_framework.serializers import ModelSerializer, Serializer
 from rest_framework import serializers
 
 
+
 from .models import Category, Book, BookImage, Author
 
 
@@ -31,8 +32,6 @@ class BookSerializer(ModelSerializer):
         read_only_fields = ['add_user', 'id', 'slug', 'views']
 
     
-
-
 
 
 class AuthorSerializer(ModelSerializer):

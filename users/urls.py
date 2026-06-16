@@ -2,10 +2,10 @@ from django.urls import path, include
 from .views import ( 
 RegisterCreateAPIView, ProfileRetrieveAPIView, 
 SocialAccountRetrieveUpdateDestroyAPIView,
-SocialAccountCreateAPIView
+SocialAccountListCreateAPIView
 )
 from rest_framework_simplejwt.views import ( 
-TokenObtainPairView, TokenRefreshView, TokenBlacklistView,
+TokenObtainPairView, TokenRefreshView, TokenBlacklistView
 
 )
 
@@ -19,8 +19,7 @@ urlpatterns = [
     path('api/user/logout', TokenBlacklistView.as_view(), name="logout"),
 
     path("profile/", ProfileRetrieveAPIView.as_view(), name="profile"),
-    path("social-account-update/", SocialAccountRetrieveUpdateDestroyAPIView.as_view(), name="social_update"),
-    path("social-account-create/", SocialAccountCreateAPIView.as_view(), name="social_create"),
-
+    path("social-account-update/<int:pk>/", SocialAccountRetrieveUpdateDestroyAPIView.as_view(), name="social_update"),
+    path("social-account-create/", SocialAccountListCreateAPIView.as_view(), name="social_create"),
  
 ]

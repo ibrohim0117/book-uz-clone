@@ -6,6 +6,7 @@ from drf_spectacular.utils import extend_schema
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework import permissions
+from django.db.models import F
 
 from .models import Category, Book, Author
 from .serializers import (
@@ -51,15 +52,6 @@ class BookListCreateAPIView(ListCreateAPIView):
     serializer_class = BookSerializer
     filterset_class = FilterMaxMinValue
     
-    # def get_queryset(self):
-    #     queryset = Book.objects.all()
-    #     search_query = self.request.query_params.get('search', None)
-
-    #     if search_query:
-    #         queryset = Book.objects.filter(name__icontains=search_query)
-
-
-    #     return queryset 
 
     def get_permissions(self):
         if self.request.method == "GET":
@@ -82,18 +74,17 @@ class BookRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
         if self.request.method == "GET":
             return [AllowAny(), ]
         return [IsAdminRoleUser(), IsAuthenticated()]
+
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        Book.objects.filter(pk=instance.pk).update(views=F('views') + 1)
+        instance.views += 1
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
     
     
-    # def retrieve(self, request, *args, **kwargs):
-    #     instance = self.get_object()  
-    #     instance.views += 1           
-    #     instance.save()               
-
-    #     serializer = self.get_serializer(instance)
-    #     return Response(serializer.data)
-
-
-
+    
 @extend_schema(tags=["Author"])
 class AuthorCreateApiView(ListCreateAPIView):
 
