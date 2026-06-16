@@ -30,6 +30,8 @@ class BookSerializer(ModelSerializer):
         fields = '__all__'
         read_only_fields = ['add_user', 'id', 'slug', 'views']
 
+    
+
 
 
 
