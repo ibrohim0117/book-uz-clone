@@ -1,5 +1,4 @@
 from rest_framework.permissions import BasePermission
-<<<<<<< HEAD
 
 class IsAdminRoleUser(BasePermission):
     """
@@ -8,7 +7,6 @@ class IsAdminRoleUser(BasePermission):
 
     def has_permission(self, request, view):
         return bool(request.user and request.user.is_staff)
-=======
 from users.models import Users
 
 
@@ -18,7 +16,6 @@ class IsAdminRoleUser(BasePermission):
     """
 
     def has_permission(self, request, view):
-        if request.user and request.user.role == Users.RoleChoices.ADMIN:
+        if request.user.is_authenticated and request.user.role == Users.RoleChoices.ADMIN:
             return True
         return False
->>>>>>> 2eac412907f0c695ee4122923a99df85ae5e7602

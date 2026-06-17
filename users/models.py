@@ -1,8 +1,10 @@
+from uuid import uuid4
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from product.models import BaseCreateModel
-from django.contrib.auth.hashers import make_password
 from rest_framework_simplejwt.tokens import RefreshToken
+
+
+
 
 class Users(AbstractUser):
     class RoleChoices(models.TextChoices):
@@ -27,9 +29,9 @@ class Users(AbstractUser):
 
         return data
     
-
     def __str__(self):
         return self.username
+    
 
     @property
     def full_name(self):
@@ -39,10 +41,23 @@ class Users(AbstractUser):
 
 class SocialNetwork(models.Model):
     title = models.CharField(max_length=250)
-    url = models.URLField(max_length=500)
+    url = models.URLField(max_length=500, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(Users, on_delete=models.CASCADE, related_name='social_acc_list')
 
+    
     def __str__(self):
         return self.title
+
+
+
+class Cart(models.Model):
+    user = models.ForeignKey(Users, on_delete=models.CASCADE, related_name="user_cart")
+    book = models.ForeignKey('product.Book', on_delete=models.CASCADE, related_name="cart_item", null=True)
+    count = models.PositiveIntegerField(default=1)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.product.name}"
+    
