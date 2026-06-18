@@ -9,9 +9,10 @@ from drf_spectacular.utils import extend_schema
 from rest_framework.generics import (
     CreateAPIView, ListAPIView, RetrieveUpdateDestroyAPIView
 )
-from .serializers import UserRegisterSerializer, UserProfileSerializer
+from rest_framework.generics import ListCreateAPIView, RetrieveDestroyAPIView
+from .serializers import UserRegisterSerializer, UserProfileSerializer, SocialNetworkSerializer
 from rest_framework.exceptions import PermissionDenied
-from .models import Users
+from .models import Users, SocialNetwork
 
 
 
@@ -41,4 +42,33 @@ class UserProfileRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
         if self.request.user != instance and not self.request.user.is_staff:
             raise PermissionDenied("Not permitted to delete this profile.")
         instance.delete()
+
+
+@extend_schema(tags=["SocialNetwork"])
+class SocialNetworkListCreateAPIView(ListCreateAPIView):
+    queryset = SocialNetwork.objects.all()
+    serializer_class = SocialNetworkSerializer
+
+    def get_permissions(self):
+        if self.request.method == "GET":
+            return [AllowAny()]
+        return [IsAuthenticated()]
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+
+@extend_schema(tags=["SocialNetwork"])
+class SocialNetworkRetrieveDestroyAPIView(RetrieveDestroyAPIView):
+    queryset = SocialNetwork.objects.all()
+    serializer_class = SocialNetworkSerializer
+
+    def get_permissions(self):
+        return [IsAuthenticated()]
+
+    def perform_destroy(self, instance):
+        if instance.user != self.request.user and not self.request.user.is_staff:
+            raise PermissionDenied("Not permitted to delete this social account.")
+        instance.delete()
+
 

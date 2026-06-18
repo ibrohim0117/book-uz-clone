@@ -15,6 +15,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter
 
 from .models import Category, Book, Author
+from django.db.models import F
 from .serializers import (
     CategorySerializer,BookSerializer,
     AuthorCreateSerializer
@@ -47,7 +48,6 @@ class CategoryRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
         if self.request.method == "GET":
             return [AllowAny(), ]            
         return [IsAuthenticated(), IsAdminRoleUser()]
-        # return [IsAdminUser(), IsAuthenticated()]
 
     
 
@@ -80,6 +80,13 @@ class BookRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
         if self.request.method == "GET":
             return [AllowAny(), ]
         return [IsAdminUser(), IsAuthenticated()]
+    
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        Book.objects.filter(pk=instance.pk).update(views=F('views') + 1)
+        instance.refresh_from_db()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
 
 
         
@@ -109,3 +116,4 @@ class AuthorRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
         if self.request.method == "GET":
             return [AllowAny(), ]
         return [IsAuthenticated(), IsAdminUser()]
+    

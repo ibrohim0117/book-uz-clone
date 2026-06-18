@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.password_validation import validate_password
-from .models import Users
+from .models import Users, SocialNetwork
 
 class UserRegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(
@@ -59,3 +59,10 @@ class UserRegisterSerializer(ModelSerializer):
         data = super().to_representation(instance)
         data.update(instance.token())
         return data 
+
+
+class SocialNetworkSerializer(ModelSerializer):
+    class Meta:
+        model = SocialNetwork
+        fields = ["id", "title", "url", "created_at", "updated_at"]
+        read_only_fields = ["id", "created_at", "updated_at"]
