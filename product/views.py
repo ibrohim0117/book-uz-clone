@@ -6,6 +6,8 @@ from drf_spectacular.utils import extend_schema
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework import permissions
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter, OrderingFilter
 
 from .models import Category, Book, Author
 from .serializers import (
@@ -50,16 +52,11 @@ class BookListCreateAPIView(ListCreateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     filterset_class = FilterMaxMinValue
-    
-    # def get_queryset(self):
-    #     queryset = Book.objects.all()
-    #     search_query = self.request.query_params.get('search', None)
-
-    #     if search_query:
-    #         queryset = Book.objects.filter(name__icontains=search_query)
-
-
-    #     return queryset 
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    search_fields = ['name', 'about', 'author__full_name', 'category__name']
+    ordering_fields = ['price', 'views', 'created_at']
+    ordering = ['-created_at']
+        
 
     def get_permissions(self):
         if self.request.method == "GET":
@@ -69,6 +66,18 @@ class BookListCreateAPIView(ListCreateAPIView):
     
     def perform_create(self, serializer):
         return serializer.save(add_user=self.request.user)
+
+
+
+    # def get_queryset(self):
+    #     queryset = Book.objects.all()
+    #     search_query = self.request.query_params.get('search', None)
+
+    #     if search_query:
+    #         queryset = Book.objects.filter(name__icontains=search_query)
+
+
+    #     return queryset 
 
 
 
@@ -90,6 +99,7 @@ class AuthorCreateApiView(ListCreateAPIView):
 
     queryset = Author.objects.all()
     serializer_class = AuthorSerializer
+    pagination_class = None
 
     def get_permissions(self):
         if self.request.method == "GET":
@@ -98,7 +108,7 @@ class AuthorCreateApiView(ListCreateAPIView):
     
 
     def perform_create(self, serializer):
-        return serializer.save(added_user=self.request.user)
+        return serializer.save(add_user=self.request.user)
     
 
 
@@ -112,8 +122,3 @@ class AuthorRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
         if self.request.method == "GET":
             return [AllowAny(), ]
         return [IsAuthenticated(), IsAdminRoleUser()]
-    
-    
-    
-
-    

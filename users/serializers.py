@@ -1,9 +1,9 @@
 from rest_framework import serializers 
 from rest_framework.serializers import ModelSerializer
 from django.contrib.auth.hashers import make_password
+from rest_framework.validators import UniqueTogetherValidator
 
 from .models import Users, SocialNetwork
-
 
 
 class UserRegisterSerializer(ModelSerializer):
@@ -23,19 +23,29 @@ class UserRegisterSerializer(ModelSerializer):
     
 
 class SocialAccountSerializer(ModelSerializer):
-
     class Meta:
         model = SocialNetwork
-        fields = "__all__"
+        fields = ["id", "title", "url", "created_at", "updated_at"]
+
+        validators = [
+            UniqueTogetherValidator(
+                queryset=SocialNetwork.objects.all(),
+                fields=['user', 'url'],
+                message="Siz bu havolani (url) allaqachon kiritgansiz!"
+            )
+        ]
 
 
 class UserProfileSerializer(ModelSerializer):
-    social_acc_list = SocialAccountSerializer(many=True)
-
+    social_links = serializers.SerializerMethodField()
 
     class Meta:
         model = Users
         fields = [
             'phone', 'avatar', 'full_name', 'about', 'date_joined',
-            'social_acc_list', 'username'
-            ]
+            'username', 'social_links'
+        ]
+
+
+    def get_social_links(self, obj):
+        return obj.social_acc_list.values_list('url', flat=True)

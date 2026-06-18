@@ -7,9 +7,20 @@ from .models import Category, Book, BookImage, Author
 
 
 class CategorySerializer(ModelSerializer):
+    parent_detail = serializers.SerializerMethodField()
+    
+    def get_parent_detail(self, obj):
+        if obj.parent:
+            return {
+                'id': obj.parent.id,
+                'name': obj.parent.name,
+                'slug': obj.parent.slug,
+            }
+        return None
+    
     class Meta:
         model = Category
-        fields = ['id', 'name', 'slug', 'category_image', 'books', 'parent']
+        fields = ['id', 'name', 'slug', 'category_image', 'books', 'parent', 'parent_detail']
         read_only_fields = ['id', 'slug', 'books']
 
 
