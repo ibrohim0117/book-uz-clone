@@ -86,15 +86,15 @@
                 }
             }
         },
-        "/api/v1/product/author/{slug}": {
+        "/api/v1/product/author/{id}": {
             "get": {
                 "operationId": "api_v1_product_author_retrieve",
                 "parameters": [
                     {
                         "in": "path",
-                        "name": "slug",
+                        "name": "id",
                         "schema": {
-                            "type": "string"
+                            "type": "integer"
                         },
                         "required": true
                     }
@@ -126,9 +126,9 @@
                 "parameters": [
                     {
                         "in": "path",
-                        "name": "slug",
+                        "name": "id",
                         "schema": {
-                            "type": "string"
+                            "type": "integer"
                         },
                         "required": true
                     }
@@ -179,9 +179,9 @@
                 "parameters": [
                     {
                         "in": "path",
-                        "name": "slug",
+                        "name": "id",
                         "schema": {
-                            "type": "string"
+                            "type": "integer"
                         },
                         "required": true
                     }
@@ -231,9 +231,9 @@
                 "parameters": [
                     {
                         "in": "path",
-                        "name": "slug",
+                        "name": "id",
                         "schema": {
-                            "type": "string"
+                            "type": "integer"
                         },
                         "required": true
                     }
@@ -898,9 +898,9 @@
                 }
             }
         },
-        "/api/v1/user/profile/": {
+        "/api/v1/user/me/": {
             "get": {
-                "operationId": "api_v1_user_profile_retrieve",
+                "operationId": "api_v1_user_me_retrieve",
                 "tags": [
                     "User/Profile"
                 ],
@@ -923,7 +923,7 @@
                 }
             },
             "put": {
-                "operationId": "api_v1_user_profile_update",
+                "operationId": "api_v1_user_me_update",
                 "tags": [
                     "User/Profile"
                 ],
@@ -966,7 +966,7 @@
                 }
             },
             "patch": {
-                "operationId": "api_v1_user_profile_partial_update",
+                "operationId": "api_v1_user_me_partial_update",
                 "tags": [
                     "User/Profile"
                 ],
@@ -1004,6 +1004,251 @@
                             }
                         },
                         "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/user/me/social/": {
+            "get": {
+                "operationId": "api_v1_user_me_social_list",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "required": false,
+                        "in": "query",
+                        "description": "A page number within the paginated result set.",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "tags": [
+                    "social_account-create"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PaginatedSocialAccountList"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "post": {
+                "operationId": "api_v1_user_me_social_create",
+                "tags": [
+                    "social_account-create"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SocialAccount"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SocialAccount"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SocialAccount"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SocialAccount"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/user/me/social/{id}/": {
+            "get": {
+                "operationId": "api_v1_user_me_social_retrieve",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "ijtimoiy-tarmoq"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SocialAccount"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "put": {
+                "operationId": "api_v1_user_me_social_update",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "ijtimoiy-tarmoq"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SocialAccount"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SocialAccount"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SocialAccount"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SocialAccount"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "patch": {
+                "operationId": "api_v1_user_me_social_partial_update",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "ijtimoiy-tarmoq"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedSocialAccount"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedSocialAccount"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedSocialAccount"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SocialAccount"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "api_v1_user_me_social_destroy",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "ijtimoiy-tarmoq"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No response body"
                     }
                 }
             }
@@ -1050,221 +1295,6 @@
                             }
                         },
                         "description": ""
-                    }
-                }
-            }
-        },
-        "/api/v1/user/social-account-create/": {
-            "post": {
-                "operationId": "api_v1_user_social_account_create_create",
-                "tags": [
-                    "social_account-create"
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/SocialAccount"
-                            }
-                        },
-                        "application/x-www-form-urlencoded": {
-                            "schema": {
-                                "$ref": "#/components/schemas/SocialAccount"
-                            }
-                        },
-                        "multipart/form-data": {
-                            "schema": {
-                                "$ref": "#/components/schemas/SocialAccount"
-                            }
-                        }
-                    },
-                    "required": true
-                },
-                "security": [
-                    {
-                        "jwtAuth": []
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/SocialAccount"
-                                }
-                            }
-                        },
-                        "description": ""
-                    }
-                }
-            }
-        },
-        "/api/v1/user/social-account-update/": {
-            "get": {
-                "operationId": "api_v1_user_social_account_update_retrieve",
-                "parameters": [
-                    {
-                        "in": "query",
-                        "name": "title",
-                        "schema": {
-                            "type": "string"
-                        },
-                        "description": "O'zgartirmoqchi yoki o'chirmoqchi bo'lgan ijtimoiy tarmoq nomi (masalan: telegram)",
-                        "required": true
-                    }
-                ],
-                "tags": [
-                    "social_account-update"
-                ],
-                "security": [
-                    {
-                        "jwtAuth": []
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/SocialAccount"
-                                }
-                            }
-                        },
-                        "description": ""
-                    }
-                }
-            },
-            "put": {
-                "operationId": "api_v1_user_social_account_update_update",
-                "parameters": [
-                    {
-                        "in": "query",
-                        "name": "title",
-                        "schema": {
-                            "type": "string"
-                        },
-                        "description": "O'zgartirmoqchi yoki o'chirmoqchi bo'lgan ijtimoiy tarmoq nomi (masalan: telegram)",
-                        "required": true
-                    }
-                ],
-                "tags": [
-                    "social_account-update"
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/SocialAccount"
-                            }
-                        },
-                        "application/x-www-form-urlencoded": {
-                            "schema": {
-                                "$ref": "#/components/schemas/SocialAccount"
-                            }
-                        },
-                        "multipart/form-data": {
-                            "schema": {
-                                "$ref": "#/components/schemas/SocialAccount"
-                            }
-                        }
-                    },
-                    "required": true
-                },
-                "security": [
-                    {
-                        "jwtAuth": []
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/SocialAccount"
-                                }
-                            }
-                        },
-                        "description": ""
-                    }
-                }
-            },
-            "patch": {
-                "operationId": "api_v1_user_social_account_update_partial_update",
-                "parameters": [
-                    {
-                        "in": "query",
-                        "name": "title",
-                        "schema": {
-                            "type": "string"
-                        },
-                        "description": "O'zgartirmoqchi yoki o'chirmoqchi bo'lgan ijtimoiy tarmoq nomi (masalan: telegram)",
-                        "required": true
-                    }
-                ],
-                "tags": [
-                    "social_account-update"
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/PatchedSocialAccount"
-                            }
-                        },
-                        "application/x-www-form-urlencoded": {
-                            "schema": {
-                                "$ref": "#/components/schemas/PatchedSocialAccount"
-                            }
-                        },
-                        "multipart/form-data": {
-                            "schema": {
-                                "$ref": "#/components/schemas/PatchedSocialAccount"
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "jwtAuth": []
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/SocialAccount"
-                                }
-                            }
-                        },
-                        "description": ""
-                    }
-                }
-            },
-            "delete": {
-                "operationId": "api_v1_user_social_account_update_destroy",
-                "parameters": [
-                    {
-                        "in": "query",
-                        "name": "title",
-                        "schema": {
-                            "type": "string"
-                        },
-                        "description": "O'zgartirmoqchi yoki o'chirmoqchi bo'lgan ijtimoiy tarmoq nomi (masalan: telegram)",
-                        "required": true
-                    }
-                ],
-                "tags": [
-                    "social_account-update"
-                ],
-                "security": [
-                    {
-                        "jwtAuth": []
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "No response body"
                     }
                 }
             }
@@ -1540,6 +1570,37 @@
                     }
                 }
             },
+            "PaginatedSocialAccountList": {
+                "type": "object",
+                "required": [
+                    "count",
+                    "results"
+                ],
+                "properties": {
+                    "count": {
+                        "type": "integer",
+                        "example": 123
+                    },
+                    "next": {
+                        "type": "string",
+                        "nullable": true,
+                        "format": "uri",
+                        "example": "http://api.example.org/accounts/?page=4"
+                    },
+                    "previous": {
+                        "type": "string",
+                        "nullable": true,
+                        "format": "uri",
+                        "example": "http://api.example.org/accounts/?page=2"
+                    },
+                    "results": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/SocialAccount"
+                        }
+                    }
+                }
+            },
             "PatchedAuthor": {
                 "type": "object",
                 "properties": {
@@ -1738,9 +1799,8 @@
                     },
                     "username": {
                         "type": "string",
-                        "description": "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.",
-                        "pattern": "^[\\w.@+-]+$",
-                        "maxLength": 150
+                        "readOnly": true,
+                        "description": "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."
                     }
                 }
             },
@@ -1873,9 +1933,8 @@
                     },
                     "username": {
                         "type": "string",
-                        "description": "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.",
-                        "pattern": "^[\\w.@+-]+$",
-                        "maxLength": 150
+                        "readOnly": true,
+                        "description": "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."
                     }
                 },
                 "required": [
