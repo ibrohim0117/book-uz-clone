@@ -11,7 +11,7 @@ from drf_spectacular.utils import extend_schema
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework import permissions
-from drf_spectacular.utils import extend_schema
+
 from .models import Category, Book, Author
 from users.models import Users
 from .serializers import (
@@ -108,18 +108,7 @@ class BookCreateAPIView(CreateAPIView):
     #         queryset = Book.objects.filter(name__icontains=search_query)
 
 
-
-    # if min_price:
-    #     queryset = queryset.filter(price__gte=min_price)
-
-    #     if max_price:
-    #         queryset = queryset.filter(price__lte=max_price)
-
-            
     #     return queryset 
-
-    #     return queryset 
-
 
     def get_permissions(self):
         if self.request.method == "GET":
@@ -157,7 +146,15 @@ class BookRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
         return [IsAdminRoleUser(), IsAuthenticated()]
 
 
-        
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        Book.objects.filter(pk=instance.pk).update(views=F('views') + 1)
+        instance.views += 1
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
+    
+    
+    
 @extend_schema(tags=["Author"])
 class AuthorCreateApiView(ListCreateAPIView):
 
@@ -171,7 +168,7 @@ class AuthorCreateApiView(ListCreateAPIView):
     
 
     def perform_create(self, serializer):
-        return serializer.save(added_user=self.request.user)
+        return serializer.save(add_user=self.request.user)
     
 
 class AuthorRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
@@ -194,8 +191,4 @@ class AuthorRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
         if self.request.method == "GET":
             return [AllowAny(), ]
         return [IsAuthenticated(), IsAdminRoleUser()]
-    
-    
-    
-
     

@@ -6,6 +6,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 from datetime import timedelta
 
+
 load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -17,6 +18,8 @@ SECRET_KEY = 'django-insecure-qo8(m#4frd9gqm!jxjwr^3)l8!4^le0yce096hq1isqyf9+7cd
 DEBUG = True
 SECRET_KEY ='django-insecure-test-key-12345'
 DEBUG =True
+
+
 
 
 
@@ -82,24 +85,27 @@ WSGI_APPLICATION = 'root.wsgi.application'
 
 
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv("DB_NAME"),        
+        'USER': os.getenv("DB_USER"),       
+        'PASSWORD': os.getenv("DB_PASSWORD"), 
+        'HOST': os.getenv("DB_HOST"),
+        'PORT': os.getenv("DB_PORT"),
+    }
+}
+
+
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': os.getenv("DB_NAME"),        
-#         'USER': os.getenv("DB_USER"),       
-#         'PASSWORD': os.getenv("DB_PASSWORD"), 
-#         'HOST': os.getenv("DB_HOST"),
-#         'PORT': os.getenv("DB_PORT"),
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
 
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+
 
 
 

@@ -1,17 +1,23 @@
-from django.shortcuts import render
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
+from rest_framework.exceptions import NotFound, ValidationError
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from drf_spectacular.utils import extend_schema
-from rest_framework_simplejwt.authentication import  JWTAuthentication
+from drf_spectacular.utils import extend_schema, OpenApiParameter
+from drf_spectacular.types import OpenApiTypes
+
 
 from rest_framework.generics import (
-    CreateAPIView, ListAPIView, RetrieveAPIView
+    CreateAPIView, RetrieveUpdateDestroyAPIView,
+    RetrieveAPIView, RetrieveUpdateAPIView,
+    ListCreateAPIView
 )
 
-from .serializers import UserRegisterSerializer, UserProfileSerializer
-from .models import Users
+from .serializers import (
+    UserRegisterSerializer, UserProfileSerializer,
+    SocialAccountSerializer, UserCartSerializer,
+    SocialAccountListSerializer
+)
+
+from .models import Users, SocialNetwork
 
 
 
@@ -21,11 +27,35 @@ class RegisterCreateAPIView(CreateAPIView):
     serializer_class = UserRegisterSerializer
 
     
+
+
 @extend_schema(tags=['User/Profile'])
-class ProfileRetrieveAPIView(RetrieveAPIView):
+class ProfileRetrieveAPIView(RetrieveUpdateAPIView):
     serializer_class = UserProfileSerializer
-    # authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
 
     def get_object(self):
         return self.request.user
+    
+
+
+@extend_schema(tags=['social_account-create'])
+class SocialAccountListCreateAPIView(ListCreateAPIView):
+    queryset = SocialNetwork.objects.all()
+    serializer_class = SocialAccountSerializer
+    permission_classes = [IsAuthenticated, ]
+
+
+    def perform_create(self, serializer):
+        return serializer.save(user=self.request.user)
+
+
+
+@extend_schema(request=SocialAccountSerializer, tags=['ijtimoiy-tarmoq'])
+class SocialAccountRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
+    serializer_class = SocialAccountSerializer
+    permission_classes = [IsAuthenticated, ]
+    queryset = SocialNetwork.objects.all()
+    lookup_field = 'pk'
+
+
