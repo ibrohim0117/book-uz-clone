@@ -106,7 +106,7 @@ class AuthorCreateApiView(ListCreateAPIView):
 class AuthorRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     queryset = Author.objects.all()
     serializer_class = AuthorSerializer
-    lookup_field = 'slug'
+    lookup_field = 'pk'
 
     def get_permissions(self):
         if self.request.method == "GET":
