@@ -1,8 +1,9 @@
 import uuid
 from django.db import models
 from django.utils.text import slugify
+from django.conf import settings 
 from users.models import Users
-
+from django.contrib.auth.models import AbstractUser
 
 class BaseCreateModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
@@ -10,7 +11,6 @@ class BaseCreateModel(models.Model):
 
     class Meta:
         abstract = True
-
 
 
 class Category(BaseCreateModel):
@@ -30,7 +30,6 @@ class Category(BaseCreateModel):
 
     def __str__(self):
         return self.name
-
 
 
 class Author(BaseCreateModel):
@@ -56,6 +55,15 @@ class Book(BaseCreateModel):
     info = models.JSONField(default=dict)
     author = models.ForeignKey(Author, on_delete=models.SET_NULL, related_name="author", blank=True, null=True)
     views = models.IntegerField(default=0)
+    
+   
+    added_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL, 
+        on_delete=models.SET_NULL, 
+        related_name="added_books", 
+        blank=True, 
+        null=True
+    )
 
     def __str__(self):
         return self.name
@@ -68,7 +76,6 @@ class Book(BaseCreateModel):
             slugger = f"{slug}-{addon}"
             self.slug = slugger
         return super().save(*args, **kwargs)
-    
 
 
 class BookImage(BaseCreateModel):
@@ -77,3 +84,7 @@ class BookImage(BaseCreateModel):
 
     def __str__(self):
         return self.book.name
+    
+
+
+
