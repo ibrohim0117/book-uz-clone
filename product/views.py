@@ -19,7 +19,7 @@ from .pagination import BookPagination
 from .filters import BookFilter
 
 
-# ─── Category ────────────────────────────────────────────────────────────────
+
 
 @extend_schema(tags=['category'])
 class CategoryListCreateAPIView(ListCreateAPIView):
@@ -51,7 +51,7 @@ class CategoryRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
         return self.serializer_class
 
 
-# ─── Book ─────────────────────────────────────────────────────────────────────
+
 
 @extend_schema(tags=['book'])
 class BookListCreateAPIView(ListCreateAPIView):
@@ -110,7 +110,7 @@ class BookRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
         return self.serializer_class
 
 
-# ─── Author ───────────────────────────────────────────────────────────────────
+
 
 @extend_schema(tags=["Author"])
 class AuthorCreateApiView(ListCreateAPIView):
