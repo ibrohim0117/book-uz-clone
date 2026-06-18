@@ -17,10 +17,7 @@ class CategorySerializer(ModelSerializer):
 class CategoryUpdateSerializer(ModelSerializer):
     class Meta:
         model = Category
-        fields = ['name', 'category_image']
-
-
-        fields = ['id', 'name', 'slug', 'category_image', 'books']
+        fields = ['id', 'name', 'slug', 'category_image', 'books', 'parent']
         read_only_fields = ['id', 'slug', 'books']
 
 
@@ -64,7 +61,7 @@ class BookUpdateSerializer(ModelSerializer):
 
 
 
-class AuthorCreateSerializer(ModelSerializer):
+class AuthorSerializer(ModelSerializer):
     class Meta:
         model = Author
         fields = "__all__"

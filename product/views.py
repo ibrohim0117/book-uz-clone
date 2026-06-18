@@ -6,19 +6,21 @@ from rest_framework.generics import (
 
 from .permissions import IsAdminRoleUser
 from rest_framework.authentication import BasicAuthentication
+
 from drf_spectacular.utils import extend_schema
 from rest_framework.response import Response
-from rest_framework import filters
 from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework import permissions
 from drf_spectacular.utils import extend_schema
 from .models import Category, Book, Author
 from users.models import Users
 from .serializers import (
-    CategorySerializer,BookSerializer,
-    AuthorCreateSerializer, CategoryDetailSerializer, CategoryUpdateSerializer,
+    CategorySerializer,BookSerializer,CategoryDetailSerializer, CategoryUpdateSerializer,
     BookCreateSerializer, BookUpdateSerializer, UserProfileSerializer, AuthorSerializer
 )
+from .filters import FilterMaxMinValue
+from .permissions import IsAdminRoleUser
+
 
 
 
@@ -82,7 +84,6 @@ class CategoryRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
 class BookListAPIView(ListAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-
     permission_classes = [permissions.AllowAny] 
 
 
@@ -97,24 +98,28 @@ class BookCreateAPIView(CreateAPIView):
         serializer.save(added_by=self.request.user)
 
     filterset_fields = ['price', ]
+    filterset_class = FilterMaxMinValue
+    
+    # def get_queryset(self):
+    #     queryset = Book.objects.all()
+    #     search_query = self.request.query_params.get('search', None)
 
-    def get_queryset(self):
-        queryset = Book.objects.all()
-        search_query = self.request.query_params.get('search', None)
-        min_price = self.request.query_params.get('min_price', None)
-        max_price = self.request.query_params.get('max_price', None)
+    #     if search_query:
+    #         queryset = Book.objects.filter(name__icontains=search_query)
 
-        if search_query:
-            queryset = Book.objects.filter(name__icontains=search_query)
 
-        if min_price:
-            queryset = queryset.filter(price__gte=min_price)
 
-        if max_price:
-            queryset = queryset.filter(price__lte=max_price)
+    # if min_price:
+    #     queryset = queryset.filter(price__gte=min_price)
+
+    #     if max_price:
+    #         queryset = queryset.filter(price__lte=max_price)
 
             
-        return queryset 
+    #     return queryset 
+
+    #     return queryset 
+
 
     def get_permissions(self):
         if self.request.method == "GET":
@@ -149,7 +154,7 @@ class BookRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     def get_permissions(self):
         if self.request.method == "GET":
             return [AllowAny(), ]
-        return [IsAdminUser(), IsAuthenticated()]
+        return [IsAdminRoleUser(), IsAuthenticated()]
 
 
         
@@ -157,12 +162,12 @@ class BookRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
 class AuthorCreateApiView(ListCreateAPIView):
 
     queryset = Author.objects.all()
-    serializer_class = AuthorCreateSerializer
+    serializer_class = AuthorSerializer
 
     def get_permissions(self):
         if self.request.method == "GET":
             return [AllowAny(), ]
-        return [IsAuthenticated(), IsAdminUser()]
+        return [IsAuthenticated(), IsAdminRoleUser()]
     
 
     def perform_create(self, serializer):
@@ -178,3 +183,19 @@ class UserProfileRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     queryset = Users.objects.all()
     serializer_class = UserProfileSerializer
 
+
+@extend_schema(tags=["Author/slug"])
+class AuthorRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
+    queryset = Author.objects.all()
+    serializer_class = AuthorSerializer
+    lookup_field = 'slug'
+
+    def get_permissions(self):
+        if self.request.method == "GET":
+            return [AllowAny(), ]
+        return [IsAuthenticated(), IsAdminRoleUser()]
+    
+    
+    
+
+    
