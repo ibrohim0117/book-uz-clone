@@ -85,7 +85,7 @@ class BookRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     
     
     
-@extend_schema(tags=["Author"])
+@extend_schema(tags=["author-get-post"])
 class AuthorCreateApiView(ListCreateAPIView):
 
     queryset = Author.objects.all()
@@ -102,7 +102,7 @@ class AuthorCreateApiView(ListCreateAPIView):
     
 
 
-@extend_schema(tags=["Author/slug"])
+@extend_schema(tags=["author-get-put-delete"])
 class AuthorRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     queryset = Author.objects.all()
     serializer_class = AuthorSerializer
