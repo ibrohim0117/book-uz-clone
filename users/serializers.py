@@ -69,21 +69,13 @@ class SocialAccountSerializer(ModelSerializer):
 class UserProfileSerializer(ModelSerializer):
     social_acc_list = SocialAccountSerializer(many=True)
 
-
     class Meta:
         model = Users
-        fields = [
-            'phone', 'avatar', 'full_name', 'about', 'date_joined',
-            'social_acc_list', 'username'
-            ]
+        fields = '__all__'
+        extra_kwargs = {
+            'password': {'write_only': True}
+        }
         read_only_fields = ['username', 'social_acc_list']
-    
-    # def validate(self, attrs):
-    #     if not validate_https_url(attrs['social_acc_list']):
-    #         raise serializers.ValidationError("Sahifa formati xato !, https:// bo'lishi shart! ")
-    #     return super().validate(attrs)
-    
-        
 
 
 class UserCartSerializer(ModelSerializer):

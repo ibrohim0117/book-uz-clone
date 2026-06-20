@@ -3,6 +3,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from drf_spectacular.utils import extend_schema
 from drf_spectacular.utils import extend_schema, OpenApiParameter
 from drf_spectacular.types import OpenApiTypes
+from product.permissions import (IsAdminRoleUser, IsOwner)
 
 
 from rest_framework.generics import (
@@ -55,7 +56,7 @@ class SocialAccountListCreateAPIView(ListCreateAPIView):
 class SocialAccountRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     serializer_class = SocialAccountSerializer
     permission_classes = [IsAuthenticated, ]
+    #anu permission da yasagan codimni shotga chaqirdim! 
+    permission_classes = [IsAuthenticated, IsOwner]
     queryset = SocialNetwork.objects.all()
     lookup_field = 'pk'
-
-

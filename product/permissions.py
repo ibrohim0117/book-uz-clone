@@ -1,4 +1,12 @@
 from rest_framework.permissions import BasePermission
+
+class IsAdminRoleUser(BasePermission):
+    """
+    Allows access only to admin users.
+    """
+
+    def has_permission(self, request, view):
+        return bool(request.user and request.user.is_staff)
 from users.models import Users
 
 
@@ -11,3 +19,11 @@ class IsAdminRoleUser(BasePermission):
         if request.user.is_authenticated and request.user.role == Users.RoleChoices.ADMIN:
             return True
         return False
+
+
+class IsOwner(BasePermission):
+    """
+    7 vazifani userni tekshiradigon funksiya
+    """
+    def has_object_permission(self, request, view, obj):
+        return bool(obj.user == request.user)

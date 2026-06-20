@@ -1,6 +1,8 @@
 import uuid
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 from django.utils.text import slugify
+from root import settings
 from users.models import Users
 
 
@@ -51,11 +53,15 @@ class Book(BaseCreateModel):
     about = models.TextField()
     count = models.IntegerField()
     is_active = models.BooleanField(default=True)
+        
+    add_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, related_name="add_user", blank=True, null=True)
+    
     add_user = models.ForeignKey(Users, on_delete=models.SET_NULL, blank=True, null=True, related_name="admins")
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, related_name="books", blank=True, null=True)
     info = models.JSONField(default=dict)
     author = models.ForeignKey(Author, on_delete=models.SET_NULL, related_name="author", blank=True, null=True)
     views = models.IntegerField(default=0)
+    # admin = models
 
     def __str__(self):
         return self.name

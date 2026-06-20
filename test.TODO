@@ -1,16 +1,17 @@
 1. paginationni har bir class uchun alohida qilish yani
-settings.py ni ichidagi sozlamani o'chirish
-2. author yaratayotganda add_user ni avtomatik olish kk
+settings.py ni ichidagi sozlamani o'chirish  +
+
+2. author yaratayotganda add_user ni avtomatik olish kk  +
 3. book-list uchun category bo'yicha filter kerak va category
- name va id ham kelishi kk va bu book-detail uchun ham
+ name va id ham kelishi kk va bu book-detail uchun ham +
 4. category-list da book larning id ro'yxati kk emas
-bunda ham filter bo'ladi faqat parent id si bilan 
-5.category-detail da parent name ham kelishi kk
-6. me api da get qilganda passwordan boshqa hamma narsa kelsin
+bunda ham filter bo'ladi faqat parent id si bilan +
+5.category-detail da parent name ham kelishi kk +
+6. me api da get qilganda passwordan boshqa hamma narsa kelsin +
 7. socila acc api larning hammasida masalan uzgaritishda yokida o'chirishda 
 biz id kiritamiz ushanda usha id lik object request yuborgan userga rostdan ham 
-tegishli yokida yo'qligini tekshirish
-8.cart ga tegishli hamma api lar chiqishi kk get, post, patch, put, delete
+tegishli yokida yo'qligini tekshirish +
+8.cart ga tegishli hamma api lar chiqishi kk get, post, patch, put, delete (tushunmadim)
 
 + 
 
@@ -18,5 +19,7 @@ api larni def orqali yani api_view decorator orqali yozish va
 generic view lardan foydalanish
 
 + serializer nima? 
+javob:  Serializer — bu Djangodagi murakkab ma'lumotlarni frontend (brauzer yoki telefon) 
+        tushunadigan JSON formatiga o'tkazib beruvchi va tekshiruvchi "tarjimon"dir.
 
 20.06.2026
