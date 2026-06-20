@@ -19,3 +19,11 @@ class IsAdminRoleUser(BasePermission):
         if request.user.is_authenticated and request.user.role == Users.RoleChoices.ADMIN:
             return True
         return False
+
+
+class IsOwner(BasePermission):
+    """
+    7 vazifani userni tekshiradigon funksiya
+    """
+    def has_object_permission(self, request, view, obj):
+        return bool(obj.user == request.user)

@@ -11,7 +11,8 @@ from django.db.models import F
 from .models import Category, Book, Author
 from .serializers import (
     CategorySerializer,BookSerializer,
-    AuthorSerializer
+    AuthorSerializer, BookDetailSerializer,
+    CategoryDetailSerializer
 )
 from .filters import FilterMaxMinValue
 from .permissions import IsAdminRoleUser
@@ -23,7 +24,8 @@ from .permissions import IsAdminRoleUser
 class CategoryListCreateAPIView(ListCreateAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    filterset_fields = ['name', ]
+    #parent filtr ni qoshtim
+    filterset_fields = ['parent']
 
     def get_permissions(self):
         if self.request.method == "POST":
@@ -36,7 +38,7 @@ class CategoryListCreateAPIView(ListCreateAPIView):
 @extend_schema(tags=['category/slug'])
 class CategoryRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     queryset = Category.objects.all()
-    serializer_class = CategorySerializer
+    serializer_class = CategoryDetailSerializer
     lookup_field = 'slug'
 
     def get_permissions(self):
@@ -51,6 +53,8 @@ class BookListCreateAPIView(ListCreateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     filterset_class = FilterMaxMinValue
+    filterset_fields = ['category']
+
     
 
     def get_permissions(self):
@@ -68,6 +72,7 @@ class BookListCreateAPIView(ListCreateAPIView):
 class BookRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
+    serializer_class = BookDetailSerializer
     lookup_field = 'slug'
 
     def get_permissions(self):
@@ -85,7 +90,7 @@ class BookRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     
     
     
-@extend_schema(tags=["Author"])
+@extend_schema(tags=["author-get-post"])
 class AuthorCreateApiView(ListCreateAPIView):
 
     queryset = Author.objects.all()
@@ -102,11 +107,11 @@ class AuthorCreateApiView(ListCreateAPIView):
     
 
 
-@extend_schema(tags=["Author/slug"])
+@extend_schema(tags=["author-get-put-delete"])
 class AuthorRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     queryset = Author.objects.all()
     serializer_class = AuthorSerializer
-    lookup_field = 'slug'
+    lookup_field = 'pk'
 
     def get_permissions(self):
         if self.request.method == "GET":

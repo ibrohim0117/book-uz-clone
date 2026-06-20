@@ -18,8 +18,8 @@ urlpatterns = [
     path('api/token/refresh/', TokenRefreshView.as_view(), name="refresh_token"),
     path('api/user/logout', TokenBlacklistView.as_view(), name="logout"),
 
-    path("profile/", ProfileRetrieveAPIView.as_view(), name="profile"),
-    path("social-account-update/<int:pk>/", SocialAccountRetrieveUpdateDestroyAPIView.as_view(), name="social_update"),
-    path("social-account-create/", SocialAccountListCreateAPIView.as_view(), name="social_create"),
+    path("me/", ProfileRetrieveAPIView.as_view(), name="profile"),
+    path("me/social/<int:pk>/", SocialAccountRetrieveUpdateDestroyAPIView.as_view(), name="social_update"),
+    path("me/social/", SocialAccountListCreateAPIView.as_view(), name="social_create"),
  
 ]
