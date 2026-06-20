@@ -8,10 +8,14 @@ from .models import Category, Book, BookImage, Author
 
 
 class CategorySerializer(ModelSerializer):
+    parent_name = serializers.CharField(source='parent.name', read_only=True, default=None)
+
     class Meta:
         model = Category
-        fields = ['id', 'name', 'slug', 'category_image', 'books', 'parent']
-        read_only_fields = ['id', 'slug', 'books']
+        # 'books' (kitoblar id ro'yxati) olib tashlandi - TODO item 4.
+        # parent_name qo'shildi - TODO item 5.
+        fields = ['id', 'name', 'slug', 'category_image', 'parent', 'parent_name']
+        read_only_fields = ['id', 'slug']
 
 
 
@@ -25,6 +29,8 @@ class BookImageSerializer(ModelSerializer):
 class BookSerializer(ModelSerializer):
     book_image = BookImageSerializer(many=True, read_only=True)
     name = serializers.CharField()
+    # category bo'yicha id va name ham kelishi kerak - TODO item 3
+    category_name = serializers.CharField(source='category.name', read_only=True, default=None)
 
     class Meta:
         model = Book

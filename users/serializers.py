@@ -46,7 +46,7 @@ class SocialAccountSerializer(ModelSerializer):
     class Meta:
         model = SocialNetwork
         fields = "__all__"
-        read_only_fields = ['created_at', 'updated_at', 'uuid', 'user']
+        read_only_fields = ['created_at', 'updated_at', 'user']
 
         
     def validate(self, attrs):
@@ -91,12 +91,13 @@ class UserCartSerializer(ModelSerializer):
     class Meta:
         model = Cart
         fields = "__all__"
+        read_only_fields = ['user', 'created_at']
 
     def validate(self, attrs):
         book = attrs.get('book')
         count = attrs.get('count')
 
-        if book.count < count:
+        if book and count and book.count < count:
             raise serializers.ValidationError("Omborda kitob yetarli emas!")
 
         return super().validate(attrs)

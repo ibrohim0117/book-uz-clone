@@ -2,7 +2,8 @@ from django.urls import path, include
 from .views import ( 
 RegisterCreateAPIView, ProfileRetrieveAPIView, 
 SocialAccountRetrieveUpdateDestroyAPIView,
-SocialAccountListCreateAPIView
+SocialAccountListCreateAPIView,
+CartListCreateAPIView, CartRetrieveUpdateDestroyAPIView,
 )
 from rest_framework_simplejwt.views import ( 
 TokenObtainPairView, TokenRefreshView, TokenBlacklistView
@@ -21,5 +22,9 @@ urlpatterns = [
     path("me/", ProfileRetrieveAPIView.as_view(), name="profile"),
     path("me/social/<int:pk>/", SocialAccountRetrieveUpdateDestroyAPIView.as_view(), name="social_update"),
     path("me/social/", SocialAccountListCreateAPIView.as_view(), name="social_create"),
+
+    
+    path("cart/", CartListCreateAPIView.as_view(), name="cart-list-create"),
+    path("cart/<int:pk>/", CartRetrieveUpdateDestroyAPIView.as_view(), name="cart-detail"),
  
 ]

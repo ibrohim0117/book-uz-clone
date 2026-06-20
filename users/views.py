@@ -17,7 +17,9 @@ from .serializers import (
     SocialAccountListSerializer
 )
 
-from .models import Users, SocialNetwork
+from .models import Users, SocialNetwork, Cart
+from .permissions import IsOwner
+from .pagination import SocialAccountPagination, CartPagination
 
 
 
@@ -41,10 +43,13 @@ class ProfileRetrieveAPIView(RetrieveUpdateAPIView):
 
 @extend_schema(tags=['social_account-create'])
 class SocialAccountListCreateAPIView(ListCreateAPIView):
-    queryset = SocialNetwork.objects.all()
     serializer_class = SocialAccountSerializer
     permission_classes = [IsAuthenticated, ]
+    pagination_class = SocialAccountPagination
 
+    def get_queryset(self):
+        # foydalanuvchi faqat o'zining social akkauntlarini ko'radi
+        return SocialNetwork.objects.filter(user=self.request.user)
 
     def perform_create(self, serializer):
         return serializer.save(user=self.request.user)
@@ -54,8 +59,36 @@ class SocialAccountListCreateAPIView(ListCreateAPIView):
 @extend_schema(request=SocialAccountSerializer, tags=['ijtimoiy-tarmoq'])
 class SocialAccountRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     serializer_class = SocialAccountSerializer
-    permission_classes = [IsAuthenticated, ]
+    permission_classes = [IsAuthenticated, IsOwner]
     queryset = SocialNetwork.objects.all()
     lookup_field = 'pk'
+    # IsOwner permission has_object_permission orqali faqat o'ziga tegishli
+    # bo'lgan id'ni o'zgartirish/o'chirish mumkinligini tekshiradi - TODO item 7
+
+
+
+@extend_schema(tags=['cart'])
+class CartListCreateAPIView(ListCreateAPIView):
+    serializer_class = UserCartSerializer
+    permission_classes = [IsAuthenticated, ]
+    pagination_class = CartPagination
+
+    def get_queryset(self):
+        return Cart.objects.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        return serializer.save(user=self.request.user)
+
+
+
+@extend_schema(tags=['cart'])
+class CartRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
+    serializer_class = UserCartSerializer
+    permission_classes = [IsAuthenticated, IsOwner]
+    lookup_field = 'pk'
+
+    def get_queryset(self):
+        # IsOwner bilan birgalikda ikki bosqichli himoya - TODO item 7,8
+        return Cart.objects.filter(user=self.request.user)
 
 

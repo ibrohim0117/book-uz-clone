@@ -13,8 +13,9 @@ from .serializers import (
     CategorySerializer,BookSerializer,
     AuthorSerializer
 )
-from .filters import FilterMaxMinValue
+from .filters import FilterMaxMinValue, CategoryFilter
 from .permissions import IsAdminRoleUser
+from .pagination import CategoryPagination, BookPagination, AuthorPagination
 
 
 
@@ -23,7 +24,8 @@ from .permissions import IsAdminRoleUser
 class CategoryListCreateAPIView(ListCreateAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    filterset_fields = ['name', ]
+    filterset_class = CategoryFilter
+    pagination_class = CategoryPagination
 
     def get_permissions(self):
         if self.request.method == "POST":
@@ -51,6 +53,7 @@ class BookListCreateAPIView(ListCreateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     filterset_class = FilterMaxMinValue
+    pagination_class = BookPagination
     
 
     def get_permissions(self):
@@ -90,6 +93,7 @@ class AuthorCreateApiView(ListCreateAPIView):
 
     queryset = Author.objects.all()
     serializer_class = AuthorSerializer
+    pagination_class = AuthorPagination
 
     def get_permissions(self):
         if self.request.method == "GET":
@@ -98,6 +102,7 @@ class AuthorCreateApiView(ListCreateAPIView):
     
 
     def perform_create(self, serializer):
+        # add_user avtomatik o'rnatiladi - TODO item 2 (allaqachon mavjud edi)
         return serializer.save(add_user=self.request.user)
     
 
