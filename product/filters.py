@@ -1,15 +1,14 @@
-import django_filters
+from django_filters import rest_framework as filters
 from .models import Book
 
+class FilterMaxMinValue(filters.FilterSet):
 
-class BookFilter(django_filters.FilterSet):
-    # Narx bo'yicha filter: ?min_price=10&max_price=50
-    min_price = django_filters.NumberFilter(field_name='price', lookup_expr='gte')
-    max_price = django_filters.NumberFilter(field_name='price', lookup_expr='lte')
-
-    # Slug bo'yicha category filter: ?category_slug=fantasy
-    category_slug = django_filters.CharFilter(field_name='category__slug', lookup_expr='exact')
+    name = filters.CharFilter(field_name='name', lookup_expr='icontains')
+    min_price = filters.NumberFilter(field_name='price', lookup_expr="gte")
+    max_price = filters.NumberFilter(field_name='price', lookup_expr="lte")
 
     class Meta:
         model = Book
-        fields = ['min_price', 'max_price', 'category_slug']
+        fields = ['name', 'min_price', 'max_price']
+
+    #tips __gte (Greater than or equal to - katta yoki teng) va __lte (Less than or equal to - kichik yoki teng)

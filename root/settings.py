@@ -5,14 +5,17 @@ from pathlib import Path
 from dotenv import load_dotenv
 from datetime import timedelta
 
+
 load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 
-SECRET_KEY = 'django-insecure-bu-yerda-tasodifiy-uzun-matn-boladi'
+SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = os.getenv("DEBUG")
+
+
 
 
 
@@ -38,6 +41,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'drf_spectacular',
     'rest_framework_simplejwt.token_blacklist',
+    'django_filters',
 ]
 
 
@@ -75,24 +79,27 @@ WSGI_APPLICATION = 'root.wsgi.application'
 
 
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv("DB_NAME"),        
+        'USER': os.getenv("DB_USER"),       
+        'PASSWORD': os.getenv("DB_PASSWORD"), 
+        'HOST': os.getenv("DB_HOST"),
+        'PORT': os.getenv("DB_PORT"),
+    }
+}
+
+
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': os.getenv("DB_NAME"),        
-#         'USER': os.getenv("DB_USER"),       
-#         'PASSWORD': os.getenv("DB_PASSWORD"), 
-#         'HOST': os.getenv("DB_HOST"),
-#         'PORT': os.getenv("DB_PORT"),
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
 
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+
 
 
 
@@ -155,7 +162,7 @@ SPECTACULAR_SETTINGS = {
     'SERVE_INCLUDE_SCHEMA': False,
     # OTHER SETTINGS
 }
-
+                    
 CORS_ALLOW_ALL_ORIGINS = True
 
 SIMPLE_JWT = {

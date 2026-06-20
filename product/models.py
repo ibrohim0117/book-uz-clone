@@ -12,6 +12,7 @@ class BaseCreateModel(models.Model):
         abstract = True
 
 
+
 class Category(BaseCreateModel):
     name = models.CharField(max_length=300)
     slug = models.SlugField(unique=True, editable=False)
@@ -31,13 +32,16 @@ class Category(BaseCreateModel):
         return self.name
 
 
+
 class Author(BaseCreateModel):
     full_name = models.CharField(max_length=40, unique=True)
     about = models.TextField()
     add_user = models.ForeignKey(Users, on_delete=models.SET_NULL, blank=True, null=True)
 
+
     def __str__(self):
         return self.full_name
+
 
 
 class Book(BaseCreateModel):
@@ -55,7 +59,7 @@ class Book(BaseCreateModel):
 
     def __str__(self):
         return self.name
-
+    
     def save(self, *args, **kwargs):
         slug = slugify(self.name)
         self.slug = slug
@@ -64,11 +68,12 @@ class Book(BaseCreateModel):
             slugger = f"{slug}-{addon}"
             self.slug = slugger
         return super().save(*args, **kwargs)
+    
 
 
 class BookImage(BaseCreateModel):
     image = models.ImageField(upload_to="books/")
-    book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name="book_image")
+    book  = models.ForeignKey(Book, on_delete=models.CASCADE, related_name="book_image")
 
     def __str__(self):
         return self.book.name

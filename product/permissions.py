@@ -8,6 +8,6 @@ class IsAdminRoleUser(BasePermission):
     """
 
     def has_permission(self, request, view):
-        if request.user and request.user.role == Users.RoleChoices.ADMIN:
+        if request.user.is_authenticated and request.user.role == Users.RoleChoices.ADMIN:
             return True
         return False
